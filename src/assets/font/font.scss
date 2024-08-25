@@ -1,0 +1,20 @@
+/* src/assets/font/font.scss */
+
+@font-face {
+    font-family: 'Nutri-Light';
+    src: url('./NunitoSans_7pt_Condensed-Light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Nutri-Regular';
+    src: url('./NunitoSans_7pt_Condensed-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Nutri-Semi';
+    src: url('./NunitoSans_7pt_Condensed-SemiBold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Nutri-Bold';
+    src: url('./NunitoSans_7pt_Condensed-Bold.ttf') format('truetype');
+}

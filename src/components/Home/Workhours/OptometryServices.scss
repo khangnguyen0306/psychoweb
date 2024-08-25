@@ -1,0 +1,147 @@
+@import url('./../../../assets/font/font.scss');
+
+$font-title: 'Nutri-Regular';
+$font-content: 'Nutri-Light';
+$font-bold: 'Nutri-Bold';
+
+$blue-main-color: #30b2d2;
+
+.opcontainer {
+    padding: 4rem;
+    margin-top: 9em;
+    width: 100%;
+    background: linear-gradient(to right, #7fca2d, #40b9ce, #1458bd);
+    color: #fff;
+
+    .opheader {
+        text-align: center;
+
+        .opvision {
+            padding: 2rem 2rem 0.5rem 2rem;
+            font-size: 20px;
+
+            p:last-child {
+                color: black;
+                font-family: $font-title;
+            }
+        }
+
+        .optitle {
+
+
+            p:first-child {
+                font-size: 60px;
+                line-height: 1.15;
+                font-weight: 400;
+                font-family: $font-title;
+            }
+
+            p:last-child {
+                font-weight: 700;
+                font-size: 60px;
+                font-family: $font-bold;
+                margin-top: 20px;
+            }
+        }
+    }
+
+    .content-opcontainer {
+        margin-top: 70px;
+
+        .services {
+            padding: 0 30px;
+
+            .service-item {
+                padding: 20px;
+                display: flex;
+                align-items: center;
+
+                .op-icon-container {
+                    width: fit-content;
+                    padding: 20px;
+                    border-radius: 50%;
+                    border: 3px solid #fff;
+                    background-color: #fff;
+                    position: relative;
+                    overflow: hidden;
+                    transition: border 0.2s ease-in-out, transform 0.2s linear;
+
+                    &:hover {
+                        border: 3px solid #fff;
+                        background: radial-gradient(circle, #fff 0%, rgba(#f5f5f5, 0.0) 70%);
+                        transition: background 0.2s ease-in-out;
+                    }
+                }
+
+                .image-icon {}
+            }
+
+            .op-content-container {
+                max-width: 240px;
+                font-family: $font-content;
+                font-size: 13px;
+                line-height: 1.6;
+                margin-left: 18px;
+
+                .op-content-title {
+                    margin-bottom: 8px;
+                    font-size: 14px;
+                    font-family: $font-bold;
+                }
+            }
+        }
+
+        .working-hours {
+            max-width: 370px;
+
+            .wk-container {
+                .wk-title {
+                    font-family: $font-content;
+                    letter-spacing: 1.5px;
+                    font-size: 40px;
+                    padding-bottom: 20px;
+                    border-bottom: 0.5px solid rgba(173, 173, 173, 0.6);
+                }
+
+                .wk-content {
+                    margin: 20px 0;
+                    font-family: $font-content;
+                    font-size: 13px;
+                    font-weight: 400;
+                    line-height: 1.7;
+                }
+            }
+
+            .wk-hours-container {
+                padding: 15px 0 0 0;
+                display: flex;
+                width: 100%;
+                gap: 50px;
+
+                .day {
+                    font-family: $font-bold;
+                    text-align: left;
+                    width: 122px;
+                    padding-bottom: 15px;
+                    border-bottom: 0.2px solid rgba(173, 173, 173, 0.6);
+                   
+                }
+
+                .time {
+                    font-size: 14px;
+                    font-weight: 200;
+                }
+
+                .book-button {
+                    padding: 3px 10px;
+                    font-size: 12px;
+                    background-color: #1c4c93;
+                    border-radius: 3.4px;
+                    &:hover{
+                        background-color: #2b74e0;
+                    }
+                }
+            }
+        }
+    }
+}
