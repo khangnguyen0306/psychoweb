@@ -8,18 +8,18 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import imager from '../../assets/image/image-login.jpg';
-import { selectCurrentToken } from "../../slices/auth.slice.js";
 import LoginForm from "../../components/login/FormLogin.jsx";
+import { selectCurrentToken } from "../../slices/auth.slice.js";
 function Login() {
-  // const token = useSelector(selectCurrentToken);
-  // const navigate = useNavigate();
+  const token = useSelector(selectCurrentToken);
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
-  // useEffect(() => {
-  //   if (token) {
-  //     navigate("/");
-  //   }
-  // }, [token, navigate]);
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token, navigate]);
 
   return (
     <>

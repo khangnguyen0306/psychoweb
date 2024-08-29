@@ -1,49 +1,71 @@
-import { flowerApi } from "../services/flowerApi";
+
+// import { productAPI } from "../services/productAPI";
+// import ProductReducer from "../slices/product.slice";
+import { doctorAPI } from "../services/doctorAPI";
+import doctorReducer from "../slices/doctor.slice";
+import { authApi } from "../services/authAPI";
+import AuthReducer from "../slices/auth.slice";
+// import { postAPI } from "../services/postAPI";
+// import postReducer from "../slices/post.slice";
+// import { exchangeAPI } from "../services/exchangeAPI";
+// import exchangeReducer from "../slices/exchange.slice";
+// import { chatAPI } from "../services/chatAPI";
+// import chatReducer from "../slices/chat.slice";
+// import { appealApi } from "../services/appealAPI";
+// import appealReducer from "../slices/appeal.slice";
+// import NotiReducer from "../slices/notification.slice";
+
 import { combineReducers } from "redux";
 import { configureStore } from "@reduxjs/toolkit";
-// ...import { persistStore, persistReducer } from 'redux-persist';
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // Sử dụng localStorage
-import flowerReducer from "../slices/flower.slice";
-const persistConfig = {
-  key: "root",
-  storage,
-};
-// Define the Reducers that will always be present in the application
-const staticReducers = {
-  theme: "theme",
-};
+import storage from "redux-persist/lib/storage"; // Using localStorage
+import sessionStorage from 'redux-persist/lib/storage/session'
 
-const persistedReducer = persistReducer(persistConfig, flowerReducer);
+const persistConfig = {
+  key: 'root',
+  storage: sessionStorage, // Bạn có thể chọn storage là sessionStorage
+  whitelist: ['user', 'token'], 
+};
+// const persistedReducer = persistReducer(persistConfig, flowerReducer);
+// const ProductPerisReducer = persistReducer(persistConfig, ProductReducer);
+const DoctorPerisReducer = persistReducer(persistConfig, doctorReducer);
+const AuthPerisReducer = persistReducer(persistConfig, AuthReducer);
+// const PostPerisReducer = persistReducer(persistConfig, postReducer);
+// const ExchangePerisReducer = persistReducer(persistConfig, exchangeReducer);
+// const ChatPerisReducer = persistReducer(persistConfig, chatReducer);
+// const AppealPerisReducer = persistReducer(persistConfig, appealReducer);
+// const NotificationReducer = persistReducer(persistConfig, NotiReducer);
+
 export const store = configureStore({
   reducer: {
-    [flowerApi.reducerPath]: flowerApi.reducer,
-    flower: persistedReducer,
+    // [flowerApi.reducerPath]: flowerApi.reducer,
+    // flower: persistedReducer,
+    // [productAPI.reducerPath]: productAPI.reducer,
+    // product: ProductPerisReducer,
+    [doctorAPI.reducerPath]: doctorAPI.reducer,
+    user: DoctorPerisReducer,
+    [authApi.reducerPath]: authApi.reducer,
+    auth: AuthPerisReducer,
+    // [postAPI.reducerPath]: postAPI.reducer,
+    // post: PostPerisReducer,
+    // [exchangeAPI.reducerPath]: exchangeAPI.reducer,
+    // exchange: ExchangePerisReducer,
+    // chat: ChatPerisReducer,
+    // [appealApi.reducerPath]: appealApi.reducer,
+    // appeal: AppealPerisReducer,
+    // notifications:NotificationReducer
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(flowerApi.middleware),
+    getDefaultMiddleware().concat(
+      // flowerApi.middleware,
+      // productAPI.middleware,
+      // userAPI.middleware,
+      authApi.middleware,
+      doctorAPI.middleware
+      // postAPI.middleware,
+      // exchangeAPI.middleware,
+      // appealApi.middleware,
+    ),
 });
-
-// Add a dictionary to keep track of the registered async reducers
-store.asyncReducers = {};
-
-// Create an inject reducer function
-// This function adds the async reducer, and creates a new combined reducer
-export const injectReducer = (key, asyncReducer) => {
-  store.asyncReducers[key] = asyncReducer;
-  store.replaceReducer(createReducer(store.asyncReducers));
-  return asyncReducer;
-};
-
-function createReducer(asyncReducers = {}) {
-  if (Object.keys(asyncReducers).length === 0) {
-    return (state) => state;
-  } else {
-    return combineReducers({
-      ...staticReducers,
-      ...asyncReducers,
-    });
-  }
-}
 
 export const Persister = persistStore(store);

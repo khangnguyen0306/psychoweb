@@ -1,12 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-// import { BE_API_LOCAL } from "../config";
+import { BE_API_LOCAL } from "../config";
 ///change APi URL 
 
 
 export const authApi = createApi({
     reducerPath: "authManagement",
-    baseQuery: fetchBaseQuery({baseUrl:"https://localhost:7293/api/"}),                
-    // baseQuery: fetchBaseQuery({ baseUrl: BE_API_LOCAL }),
+    // baseQuery: fetchBaseQuery({baseUrl:"https://localhost:7293/api/"}),                
+    baseQuery: fetchBaseQuery({ baseUrl: BE_API_LOCAL }),
     endpoints: (builder) => ({
         loginUser: builder.mutation({
             query: ({ email, password }) => ({

@@ -1,10 +1,15 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { selectCurrentToken } from "../slices/auth.slice";
 
-const AuthGuard = ({ allowedRoles, children }) => {
-  // const user = useAppSelector((state) => state.user.user);
-  console.log("AuthGuard run");
+const AuthGuard = () => {
+  const token = useSelector(selectCurrentToken);
+  const location = useLocation();
 
-  // return user ? <Outlet /> || { children } : <Navigate to="/404" replace />;
+  if (!token) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
   return <Outlet />;
 };
 

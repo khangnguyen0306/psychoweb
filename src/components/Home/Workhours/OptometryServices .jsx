@@ -7,10 +7,19 @@ import adjustment from './../../../assets/image/ajustment.svg'
 import coordinate from './../../../assets/image/coordinate.svg'
 import counsellor from './../../../assets/image/counsellor.svg'
 import reatement from './../../../assets/image/reatement.svg'
+import { useInView } from 'react-intersection-observer';
 import suopport from './../../../assets/image/suopport.svg'
 const OptometryServices = () => {
+    const { ref, inView } = useInView({
+        triggerOnce: true, 
+        threshold: 0.25,    
+      });
+      console.log('In view:', inView);
     return (
-        <div className="opcontainer">
+        <div
+        ref={ref}
+        className={`opcontainer ${inView ? 'fade-in' : ''}`}
+      >
             <div className="opheader">
                 <div className='opvision'>
                     <p >Your vision is our vision</p>
