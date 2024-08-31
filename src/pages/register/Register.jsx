@@ -7,6 +7,7 @@ import './Register.scss'
 import imager from '../../assets/image/image-login.jpg';
 import { validationPatterns } from '../../utils/utils';
 import { useRegisterUserMutation } from '../../services/authAPI';
+import dayjs from 'dayjs';
 
 
 const Register = () => {
@@ -30,7 +31,7 @@ const Register = () => {
       console.log(user);
 
     } catch (error) {
-      message.error(user.error.data.message);
+      message.error(error);
     }
   }
 
@@ -63,7 +64,7 @@ const Register = () => {
                 <Form.Item
                   hasFeedback
                   label="Full name"
-                  name="username"
+                  name="fullname"
                   rules={[
                     {
                       required: true,
@@ -93,7 +94,7 @@ const Register = () => {
                 <Form.Item
                   hasFeedback
                   label="Phone number"
-                  name="phoneNumber"
+                  name="phonenumber"
                   rules={[
                     {
                       required: true,
@@ -106,8 +107,9 @@ const Register = () => {
                 </Form.Item>
 
                 <Form.Item
+                hasFeedback
                   label="Gender"
-                  name="Gender"
+                  name="gender"
                   rules={[{ required: true, message: "Please select gender!" }]}
                 >
                   <Radio.Group>
@@ -116,8 +118,9 @@ const Register = () => {
                   </Radio.Group>
                 </Form.Item>
                 <Form.Item
+                hasFeedback
                   label="DOB"
-                  name="dob"
+                  name="dateOfBirth"
                   rules={[
                     // { required: true, message: "Please select your date of birth!" },
                     ({ getFieldValue }) => ({
@@ -176,6 +179,7 @@ const Register = () => {
                   />
                 </Form.Item>
                 <Form.Item
+                hasFeedback
                   label="Re-Type Password"
                   name="retypePassword"
                   rules={[

@@ -9,6 +9,7 @@ import Slider from "../../components/Home/slider/Slider";
 import OptometryServices from "../../components/Home/Workhours/OptometryServices ";
 import DoctorList from "../../components/Home/listDoctor/DoctorList";
 import Patient from "../../components/Home/Patient/patient";
+import Services from "../../components/Home/services/service";
 
 function Dashboard() {
 
@@ -24,6 +25,7 @@ function Dashboard() {
         <Slider />
         <OptometryServices />
         <DoctorList/>
+        <Services/>
         <Patient/>
       </Row>
     </div>
