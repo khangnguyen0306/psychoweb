@@ -20,7 +20,7 @@ const Register = () => {
 
     try {
       const user = await registerUser(values);
-      console.log(user);
+      // console.log(user.error.data.message);
       if (user.error) {
         message.error(user.error.data.message);
         return;
@@ -31,7 +31,7 @@ const Register = () => {
       console.log(user);
 
     } catch (error) {
-      message.error(error);
+     console.log(error);
     }
   }
 

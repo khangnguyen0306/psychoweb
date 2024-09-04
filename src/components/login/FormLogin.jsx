@@ -10,7 +10,7 @@ import { setToken, setUser } from "../../slices/auth.slice";
 
 
 
-const LoginForm = () => {
+const LoginForm = ({handleFogot}) => {
   const [form] = Form.useForm();
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
@@ -78,7 +78,7 @@ const LoginForm = () => {
   const handleSubmit = async (values) => {
     try {
       const result = await loginUser({ email: values.email, password: values.password });
-
+      console.log(result);
       if (result.data) {
         handleLoginSuccess(result.data);
       } else {
@@ -127,7 +127,7 @@ const LoginForm = () => {
             iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
           />
         </Form.Item>
-        <p style={{ width: '100%', textAlign: 'end' }}><Link style={{ fontSize: '16px' }} to={"/forgot-password"} > Forgot password</Link></p>
+        <p style={{ width: '100%', textAlign: 'end' }}><Link style={{ fontSize: '16px' }} onClick={handleFogot} > Forgot password</Link></p>
         <Form.Item>
 
           <button

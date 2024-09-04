@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Button, Layout, Menu, Drawer, Grid, Image, Dropdown } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { Button, Layout, Menu, Drawer, Grid, Image, Dropdown, notification } from "antd";
 import "./CustomHeader.scss";
-import { DoubleRightOutlined, FacebookOutlined, FormOutlined, InstagramOutlined, LoginOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
+import { DoubleRightOutlined, FacebookOutlined, FormOutlined, InstagramOutlined, LoginOutlined, LogoutOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
 import NameWeb from "../../../src/assets/image/logo.svg"
+import { logOut, selectCurrentToken } from "../../slices/auth.slice";
+import { useDispatch, useSelector } from "react-redux";
 const { Header } = Layout;
 const { useBreakpoint } = Grid;
 
@@ -13,6 +15,9 @@ const CustomHeader = () => {
     const [visible, setVisible] = useState(true);
     const [drawerVisible, setDrawerVisible] = useState(false);
     const [isActive, setIsActive] = useState(false);
+    const user = useSelector(selectCurrentToken);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     useEffect(() => {
         const handleScroll = () => {
             const currentScrollPos = window.pageYOffset;
@@ -25,7 +30,18 @@ const CustomHeader = () => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, [prevScrollPos]);
 
-    const items = [
+
+    const handleLogout = () => {
+        dispatch(logOut());
+        notification.success({
+            message: "Logout successfully",
+            description: "See you again!",
+            duration: 1.5
+        });
+        navigate("/login");
+    };
+
+    const itemsNoLogin = [
         {
             key: '1',
             label: (
@@ -39,19 +55,33 @@ const CustomHeader = () => {
             ),
         },
     ];
+    const items = [
+        {
+            key: '1',
+            label: (
+                <Link to='/login' style={{ display: 'flex', justifyContent: 'space-between' }}><p style={{ paddingRight: '20px' }}>Profile</p> <LoginOutlined /></Link>
+            ),
+        },
+        {
+            key: '2',
+            label: (
+                <p onClick={handleLogout} style={{ display: 'flex', justifyContent: 'space-between' }}><p style={{ paddingRight: '20px' }}>Log out</p> <LogoutOutlined /></p>
+            ),
+        },
+    ];
 
     return (
-        <Header id="header" className={visible ? "show" : "hidden"} style={{ zIndex: '1' }}>
+        <Header id="header" className={visible ? "show" : "hidden"} style={{ zIndex: '1000' }}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
 
-                <Link to={"/"} style={{marginLeft:'6rem'}}>
+                <Link to={"/"} style={{ marginLeft: '6rem' }}>
                     <div className="header-logo">
                         <Image src={NameWeb} preview={false} />
                     </div>
                 </Link>
                 {screens.md ? (
                     <>
-                        <Menu mode="horizontal" defaultSelectedKeys={["1"]} style={{ width: 'fit-content', backgroundColor: 'none',marginLeft:'2.2rem' }}>
+                        <Menu mode="horizontal" defaultSelectedKeys={["1"]} style={{ width: 'fit-content', backgroundColor: 'none', marginLeft: '2.2rem' }}>
                             <Menu.Item key="1">
                                 <Link to="/">Home</Link>
                             </Menu.Item>
@@ -85,17 +115,17 @@ const CustomHeader = () => {
                     </Button>
                 )}
             </div>
-            <div style={{display:'flex',alignItems:'center'}}>
-                <div style={{display:'flex',gap:'20px',marginRight:'20px'}}>
-                    <Link><FacebookOutlined style={{fontSize:'20px'}}/></Link>
-                    <Link><InstagramOutlined style={{fontSize:'20px'}}/></Link>
+            <div style={{ display: 'flex', alignItems: 'center',zIndex:'110000' }}>
+                <div style={{ display: 'flex', gap: '20px', marginRight: '20px' }}>
+                    <Link><FacebookOutlined style={{ fontSize: '20px' }} /></Link>
+                    <Link><InstagramOutlined style={{ fontSize: '20px' }} /></Link>
                 </div>
                 <Dropdown
                     menu={{
-                        items,
+                        items: user ? items : itemsNoLogin
                     }}
                     placement="bottom"
-                    onOpenChange={(open) => setIsActive(open)}  
+                    onOpenChange={(open) => setIsActive(open)}
                 >
                     <Button
                         className={`btn-user ${isActive ? 'active' : ''}`} // Toggle 'active' class based on state
