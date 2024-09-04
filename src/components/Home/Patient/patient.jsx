@@ -26,7 +26,7 @@ const Patient = () => {
                 <div className="absolute inset-0 bg-black opacity-70 blur-sm"></div>
                 <div className="relative z-10">
                     <p className={`text-white text-xl mb-2 font-content tracking-wide transition-opacity duration-1000 ${inView1 ? 'opacity-100' : 'opacity-0'}`}>A good words means a lot</p>
-                    <p className={`text-blue-700 transition-transform duration-1000 ${inView1 ? 'translate-y-0' : 'translate-y-10'}`}>_________</p>
+                    <div className={`h-1 w-24 bg-cyan-500 transition-transform duration-1000 mx-auto`}></div>
                     <p className={`font-light text-7xl p-5 pt-4 text-white transition-transform duration-1000 ${inView1 ? 'translate-y-0' : 'translate-y-10'}`}>Patient
                         <span className='font-bold text-7xl p-5 pt-4 text-blue-main font-black'>testimonials</span></p>
                 </div>
@@ -67,8 +67,8 @@ const Patient = () => {
                     </Col>
                 </Row>
             </div>
-            <div className='flex justify-center align-middle' > 
-                <Row className='flex gap-7 pt-16 pb-16 mt-[-100px] w-[80%] z-0 bg-slate-200'
+            <div className='flex justify-center align-middle ' > 
+                <Row className='flex gap-7 pt-16 pb-16 mt-[-100px] w-[80%] z-0 bg-slate-200 rounded-sm'
                     justify={'center'}
                     style={{ background: 'linear-gradient(to right, #7fca2d, #40b9ce, #1458bd)' }}
                 >

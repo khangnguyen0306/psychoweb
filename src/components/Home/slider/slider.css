@@ -10,6 +10,7 @@
     width: max-content;
     margin-top: 50px;
     height: auto;
+    
 }
 
 .item {
@@ -140,7 +141,7 @@
     bottom: 40%;
     left: 0%;
     right: 0%;
-    z-index: 222222;
+    z-index: 999;
     text-align: center;
     width: 100%;
 }

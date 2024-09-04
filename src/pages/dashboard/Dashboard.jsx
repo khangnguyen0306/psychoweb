@@ -10,6 +10,7 @@ import OptometryServices from "../../components/Home/Workhours/OptometryServices
 import DoctorList from "../../components/Home/listDoctor/DoctorList";
 import Patient from "../../components/Home/Patient/patient";
 import Services from "../../components/Home/services/service";
+import CustomFooter from "../../components/Footer/CustomFooter";
 
 function Dashboard() {
 
@@ -28,6 +29,7 @@ function Dashboard() {
         <Services/>
         <Patient/>
       </Row>
+      <CustomFooter/>
     </div>
   );
 }

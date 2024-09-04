@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Layout, Menu, Drawer, Grid, Image, Dropdown, notification } from "antd";
 import "./CustomHeader.scss";
@@ -18,6 +18,7 @@ const CustomHeader = () => {
     const user = useSelector(selectCurrentToken);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
     useEffect(() => {
         const handleScroll = () => {
             const currentScrollPos = window.pageYOffset;
@@ -26,110 +27,100 @@ const CustomHeader = () => {
         };
 
         window.addEventListener("scroll", handleScroll);
-
         return () => window.removeEventListener("scroll", handleScroll);
     }, [prevScrollPos]);
 
-
-    const handleLogout = () => {
-        dispatch(logOut());
+    const handleLogout = useCallback(() => {
+        dispatch(logOut());     
         notification.success({
             message: "Logout successfully",
             description: "See you again!",
             duration: 1.5
         });
         navigate("/login");
-    };
+    }, [dispatch, navigate]);
 
-    const itemsNoLogin = [
+    const itemsNoLogin = useMemo(() => [
         {
             key: '1',
             label: (
-                <Link to='/login' style={{ display: 'flex', justifyContent: 'space-between' }}><p style={{ paddingRight: '20px' }}>Login</p> <LoginOutlined /></Link>
+                <Link to='/login' style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <p style={{ paddingRight: '20px' }}>Login</p> <LoginOutlined />
+                </Link>
             ),
         },
         {
             key: '2',
             label: (
-                <Link to='/register' style={{ display: 'flex', justifyContent: 'space-between' }}><p style={{ paddingRight: '20px' }}>Register</p> <FormOutlined /></Link>
+                <Link to='/register' style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <p style={{ paddingRight: '20px' }}>Register</p> <FormOutlined />
+                </Link>
             ),
         },
-    ];
-    const items = [
+    ], []);
+
+    const items = useMemo(() => [
         {
             key: '1',
             label: (
-                <Link to='/login' style={{ display: 'flex', justifyContent: 'space-between' }}><p style={{ paddingRight: '20px' }}>Profile</p> <LoginOutlined /></Link>
+                <Link to='/profile' style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <p style={{ paddingRight: '20px' }}>Profile</p> <LoginOutlined />
+                </Link>
             ),
         },
         {
             key: '2',
             label: (
-                <p onClick={handleLogout} style={{ display: 'flex', justifyContent: 'space-between' }}><p style={{ paddingRight: '20px' }}>Log out</p> <LogoutOutlined /></p>
+                <p onClick={handleLogout} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <p style={{ paddingRight: '20px' }}>Log out</p> <LogoutOutlined />
+                </p>
             ),
         },
-    ];
+    ], [handleLogout]);
 
     return (
         <Header id="header" className={visible ? "show" : "hidden"} style={{ zIndex: '1000' }}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-
                 <Link to={"/"} style={{ marginLeft: '6rem' }}>
                     <div className="header-logo">
                         <Image src={NameWeb} preview={false} />
                     </div>
                 </Link>
                 {screens.md ? (
-                    <>
-                        <Menu mode="horizontal" defaultSelectedKeys={["1"]} style={{ width: 'fit-content', backgroundColor: 'none', marginLeft: '2.2rem' }}>
-                            <Menu.Item key="1">
-                                <Link to="/">Home</Link>
-                            </Menu.Item>
-                            <Menu.Item key="2">
-                                <Link to="admin">About</Link>
-                            </Menu.Item>
-                            <Menu.Item key="3">
-                                <Link to="/"> Community</Link>
-                            </Menu.Item>
-                            <Menu.Item key="4">
-                                <Link to="home">Search</Link>
-                            </Menu.Item>
-                            <Menu.Item key="5">
-                                <Link to="admin">Pricing</Link>
-                            </Menu.Item>
-                            {/* <Menu.Item key="6">
-                                <Button to="admin" type="primary" style={{ backgroundColor: '#30b2d2', height: '40px' }} >Booking<p><DoubleRightOutlined /></p></Button>
-                            </Menu.Item> */}
-
-                        </Menu>
-
-
-
-                    </>
-
-
-
+                    <Menu mode="horizontal" defaultSelectedKeys={["1"]} style={{ width: 'fit-content', backgroundColor: 'none', marginLeft: '2.2rem' }}>
+                        <Menu.Item key="1">
+                            <Link to="/">Home</Link>
+                        </Menu.Item>
+                        <Menu.Item key="2">
+                            <Link to="admin">About</Link>
+                        </Menu.Item>
+                        <Menu.Item key="3">
+                            <Link to="/">Community</Link>
+                        </Menu.Item>
+                        <Menu.Item key="4">
+                            <Link to="home">Search</Link>
+                        </Menu.Item>
+                        <Menu.Item key="5">
+                            <Link to="admin">Pricing</Link>
+                        </Menu.Item>
+                    </Menu>
                 ) : (
-                    <Button className="menu-btn" onClick={() => setDrawerVisible(true)} style={{ marginRight: '40px' }}>
+                    <Button className="menu-btn" onClick={() => setDrawerVisible(true)} style={{ marginRight: '40px' }} aria-label="Open menu">
                         <MenuOutlined />
                     </Button>
                 )}
             </div>
-            <div style={{ display: 'flex', alignItems: 'center',zIndex:'110000' }}>
+            <div style={{ display: 'flex', alignItems: 'center', zIndex: '110000' }}>
                 <div style={{ display: 'flex', gap: '20px', marginRight: '20px' }}>
-                    <Link><FacebookOutlined style={{ fontSize: '20px' }} /></Link>
-                    <Link><InstagramOutlined style={{ fontSize: '20px' }} /></Link>
+                    <Link aria-label="Facebook"><FacebookOutlined style={{ fontSize: '20px' }} /></Link>
+                    <Link aria-label="Instagram"><InstagramOutlined style={{ fontSize: '20px' }} /></Link>
                 </div>
                 <Dropdown
-                    menu={{
-                        items: user ? items : itemsNoLogin
-                    }}
+                    menu={{ items: user ? items : itemsNoLogin }}
                     placement="bottom"
                     onOpenChange={(open) => setIsActive(open)}
                 >
-                    <Button
-                        className={`btn-user ${isActive ? 'active' : ''}`} // Toggle 'active' class based on state
-                    >
+                    <Button className={`btn-user ${isActive ? 'active' : ''}`} aria-label="User menu">
                         <UserOutlined style={{ fontSize: '20px', color: isActive ? '#1f9bff' : '#000' }} />
                     </Button>
                 </Dropdown>
@@ -154,7 +145,7 @@ const CustomHeader = () => {
                         <Link to="admin">About</Link>
                     </Menu.Item>
                     <Menu.Item key="4">
-                        <Link to="/"> Community</Link>
+                        <Link to="/">Community</Link>
                     </Menu.Item>
                     <Menu.Item key="5">
                         <Link to="home">Search</Link>

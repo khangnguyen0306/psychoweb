@@ -8,8 +8,11 @@ import ManagerGuard from "./ManagerGuard";
 
 const Login = Loadable({ loader: () => import("../pages/login/Login") });
 const Register = Loadable({ loader: () => import("../pages/register/Register") });
-const Home = Loadable({ loader: () => import("../pages/home/Home") });
-const Dashboard = Loadable({
+const Profile = Loadable({
+  loader: () => import("../pages/profile/profile"),
+});
+// const Home = Loadable({ loader: () => import("../pages/home/Home") });
+const Home = Loadable({
   loader: () => import("../pages/dashboard/Dashboard"),
 });
 const Admin = Loadable({
@@ -30,19 +33,24 @@ export const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <MainLayout />, 
+    element: <MainLayout showFooter={false} />, 
     children: [
       {
         index: true, 
-        element: Dashboard,
+        element: Home,
       },
       {
-        path: "home",
+        path: "/",
         element: <AuthGuard />, 
         children: [
           {
             index: true,
             element: Home,
+          },
+          {
+            path: "profile",
+            element:Profile, 
+           
           },
         ],
       },

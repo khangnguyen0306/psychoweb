@@ -28,6 +28,7 @@ const Slider = () => {
     }, []);
 
     return (
+    
         <div className="container" >
             <div id="slide">
                 <div className="item item1">

@@ -10,7 +10,7 @@ import { setToken, setUser } from "../../slices/auth.slice";
 
 
 
-const LoginForm = ({handleFogot}) => {
+const LoginForm = ({ handleFogot }) => {
   const [form] = Form.useForm();
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
@@ -23,10 +23,10 @@ const LoginForm = ({handleFogot}) => {
   const handleLoginSuccess = (data) => {
     const user = data.data.user;
     const token = data.data.token;
-    
+
     dispatch(setUser(user));
     dispatch(setToken(token));
-    
+
     notification.success({
       message: "Login successfully",
       duration: 2,
@@ -36,36 +36,17 @@ const LoginForm = ({handleFogot}) => {
         </div>
       ),
     });
-  
+
     const from = location.state?.from || "/";
     navigate(from);
   };
-  
+
   const handleLoginFailure = (error, email) => {
     if (error.data) {
-      message.error(error.data.message);
-
-      // if (error.data.isBanned) {
-      //   const userId = error.data.data.user.id;
-      //   const bannedAccountId = error.data.bannedAccountId;
-
-      //   console.log("User is banned, navigating to appeal page with state:", {
-      //     email,
-      //     bannedAccountId,
-      //     userId,
-      //   });
-
-      //   navigate("/appeal", {
-      //     state: {
-      //       email,
-      //       bannedAccountId,
-      //       userId,
-      //     },
-      //   });
-
-      //   return;
-      // }
+      setError(error.data.message); // Set error message
+      // message.error(error.data.message);
     } else {
+      setError("Invalid email or password. Try again!"); // Set default error message
       notification.error({
         message: "Login error",
         description: "Invalid email or password. Try again!",
@@ -130,14 +111,17 @@ const LoginForm = ({handleFogot}) => {
         <p style={{ width: '100%', textAlign: 'end' }}><Link style={{ fontSize: '16px' }} onClick={handleFogot} > Forgot password</Link></p>
         <Form.Item>
 
-          <button
+          <Button
             type="primary"
             htmlType="submit"
-            onLoad={isLoading}
-            className="submit-btn"
+            loading={isLoading}
+            size="large"
+            // className="submit-btn"
+            className="w-full mt-6 h-14"
+            
           >
             Login
-          </button>
+          </Button>
         </Form.Item>
       </Form>
     </div>

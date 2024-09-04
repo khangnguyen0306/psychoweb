@@ -31,7 +31,7 @@ const Register = () => {
       console.log(user);
 
     } catch (error) {
-     console.log(error);
+      console.log(error);
     }
   }
 
@@ -107,7 +107,7 @@ const Register = () => {
                 </Form.Item>
 
                 <Form.Item
-                hasFeedback
+                  hasFeedback
                   label="Gender"
                   name="gender"
                   rules={[{ required: true, message: "Please select gender!" }]}
@@ -118,7 +118,7 @@ const Register = () => {
                   </Radio.Group>
                 </Form.Item>
                 <Form.Item
-                hasFeedback
+                  hasFeedback
                   label="DOB"
                   name="dateOfBirth"
                   rules={[
@@ -179,7 +179,7 @@ const Register = () => {
                   />
                 </Form.Item>
                 <Form.Item
-                hasFeedback
+                  hasFeedback
                   label="Re-Type Password"
                   name="retypePassword"
                   rules={[
@@ -201,7 +201,7 @@ const Register = () => {
                 </Form.Item>
 
                 <Form.Item>
-                  {!isLoading ? (
+                  {/* {!isLoading ? (
                     <div style={{ display: 'flex', alignItems: 'center', marginTop: '2rem' }}>
                       <button
                         type="primary"
@@ -218,9 +218,16 @@ const Register = () => {
 
                     </div>
 
-                  ) : (
-                    <Button type='primary' loading>Register</Button>
-                  )}
+                  ) : ( */}
+                  <div className='flex items-center pt-6 mt-1'>
+                    <Button    className="w-36  h-14" type='primary' loading={isLoading} >Register</Button>
+
+                    <div style={{ marginLeft: '2rem' }}>
+                      <span>Already have account ?</span>
+                      <Link to={"/login"}><span style={{ fontSize: '16px', marginLeft: '16px' }}>Login</span> </Link>
+                    </div>
+                  </div>
+                  {/* )} */}
                 </Form.Item>
               </Form>
             </div>
