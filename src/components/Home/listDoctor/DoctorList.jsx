@@ -18,7 +18,7 @@ const DoctorList = () => {
 
     return (
         <Layout className=' pb-40'>
-            <div className='text-center mt-[90px]'>
+            <div className='text-center mt-[90px] '>
                 <p className='text-gray-900 text-xl mb-2 font-content tracking-wide'>Get to know your psycholist</p>
                 <p className='text-blue-700'>_________</p>
                 <p className='font-content text-6xl pt-5 tracking-wider'>We're here to</p>
@@ -31,7 +31,6 @@ const DoctorList = () => {
                 {doctors.slice(0, 3).map((doctor) => (
                     <DoctorCard key={doctor.id} doctor={doctor} />
                 ))}
-
             </div>
         </Layout>
     );

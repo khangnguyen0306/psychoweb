@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { Button, Col, Layout, Row } from 'antd';
 import { useInView } from 'react-intersection-observer';
 import image from './../../../assets/image/1.jpg';
+import { motion } from 'framer-motion';
 
 const Patient = () => {
     // Use the query hook to fetch data
@@ -67,7 +68,8 @@ const Patient = () => {
                     </Col>
                 </Row>
             </div>
-            <div className='flex justify-center align-middle ' > 
+
+            <div className='flex justify-center align-middle ' >
                 <Row className='flex gap-7 pt-16 pb-16 mt-[-100px] w-[80%] z-0 bg-slate-200 rounded-sm'
                     justify={'center'}
                     style={{ background: 'linear-gradient(to right, #7fca2d, #40b9ce, #1458bd)' }}

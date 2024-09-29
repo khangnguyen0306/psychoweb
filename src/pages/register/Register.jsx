@@ -38,9 +38,9 @@ const Register = () => {
   return (
     <Layout className='register-layout'>
 
-      <Row className='row-layout'>
-        <Col>
-          <div className='content-layout-register'>
+      <Row className='row-layout' justify={'space-between'}>
+        <Col >
+          <div className='content-layout-register '>
             <div className='form-register'>
               <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                 <h2 className="title-login">Sign Up</h2>
@@ -220,7 +220,7 @@ const Register = () => {
 
                   ) : ( */}
                   <div className='flex items-center pt-6 mt-1'>
-                    <Button    className="w-36  h-14" type='primary' loading={isLoading} >Register</Button>
+                    <Button className="w-36  h-14" type='primary' loading={isLoading} htmlType='submit' >Register</Button>
 
                     <div style={{ marginLeft: '2rem' }}>
                       <span>Already have account ?</span>
@@ -231,11 +231,13 @@ const Register = () => {
                 </Form.Item>
               </Form>
             </div>
-            <div className='image-register'>
-              <Image preview={false} src={imager} />
-            </div>
+
           </div>
         </Col>
+        <Col>
+          <div className='image-register'>
+            <Image preview={false} src={imager} />
+          </div></Col>
       </Row>
 
     </Layout>

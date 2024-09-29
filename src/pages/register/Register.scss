@@ -19,8 +19,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        height: fit-content;
-    
+        height: 100vh;
+        overflow: hidden;
+        width: 100%;
         .content-layout-register {
             display: flex;
             align-items: center;
@@ -29,12 +30,10 @@
             border-radius: 10px;
             box-shadow: 0 15px 16.83px 0.17px rgba(0, 0, 0, .05);
             // width: 900px;
-
+            padding: 0 14.79rem;
+            min-width: 500px ;
+            min-height: 100vh;
             .form-register {
-                min-width: 496px ;
-                margin: 0 11.5rem;
-             
-             
                 .title-login {
                     line-height: 1.6;
                     font-size: 36px;
@@ -60,6 +59,7 @@
         }
 
         .image-register {
+            overflow-y: hidden;
             // padding: 0 4rem;
             img{
                 height: 100vh;

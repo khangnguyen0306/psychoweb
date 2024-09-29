@@ -8,6 +8,8 @@ import Child from './../../../assets/image/siblings.svg'
 import Brain from './../../../assets/image/brain.svg'
 import team from './../../../assets/image/teamwork.svg'
 import { RightOutlined } from '@ant-design/icons';
+import { motion } from 'framer-motion';
+import { fadeIn } from '../../../utils/utils';
 const services = [
     {
         title: 'Clinical Psychology',
@@ -42,58 +44,98 @@ const services = [
 ];
 
 const Services = () => {
-    const { ref, inView } = useInView({
-        triggerOnce: true,
-        threshold: 0.3,
-    });
+
 
     return (
         <Layout>
-            <div className="relative text-left mt-24 pb-60 pt-28 bg-cover bg-center bg-no-repeat" ref={ref}
+            <div className="relative text-left mt-24 pb-60 pt-28 bg-cover bg-center bg-no-repeat"
                 style={{ backgroundImage: 'url(https://path/to/your/image.jpg)' }}>
                 <div className="absolute inset-0 bg-white opacity-70 blur-sm"></div>
                 <div className="relative z-10 ml-16">
-                    <p className={`text-black text-xl mb-2 font-content pl-2 pb-8 tracking-wide transition-opacity duration-1000 ${inView ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>Our services</p>
-                    <p className={`text-black text-5xl mb-4 font-content tracking-wide transition-opacity duration-1000 ${inView ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>What services</p>
-                    <p className={`font-light mb-4 text-5xl text-white transition-transform duration-1000 ${inView ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+                    <p className={`text-black text-xl mb-2 font-content pl-2 pb-8 tracking-wide transition-opacity duration-1000 `}>Our services</p>
+                    <p className={`text-black text-5xl mb-4 font-content tracking-wide transition-opacity duration-1000 `}>What services</p>
+                    <p className={`font-light mb-4 text-5xl text-white transition-transform duration-1000 `}>
                         <span className='text-6xl text-[#0176d5] font-black'>Wellmeet offers?</span>
                     </p>
-                    <div className={`h-1 w-24 bg-blue-700 transition-transform duration-1000 ${inView ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}></div>
-                    <p className={`pt-10 font-content text-2xl w-3/4 leading-10 transition-transform duration-600 ${inView ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>Discover our comprehensive range of mental health services designed to support your well-being and enhance your quality of life.</p>
+                    <div className={`h-1 w-24 bg-blue-700 transition-transform duration-1000 `}></div>
+                    <p className={`pt-10 font-content text-2xl w-3/4 leading-10 transition-transform duration-600 `}>Discover our comprehensive range of mental health services designed to support your well-being and enhance your quality of life.</p>
                 </div>
-                <Row justify={'center'} className='flex gap-14 pt-20'>
-                    {services.map((service, index) => (
-                        <Col key={index} md={6} xs={24}  >
-                            <div className={`relative transition-opacity duration-1000  ${inView ? 'opacity-100' : 'opacity-0'}`}>
-                                <Image preview={false} width={"150px"} src={service.icon} />
-                                <div className='text-left text-black font-content text-lg min-h-[120px]'>
-                                    <h3 className="text-2xl font-bold text-black pt-6 ">{service.title}</h3>
-                                    <div className="h-1 w-16 bg-blue-700 my-2"></div>
-                                    <p className="mt-4 w-4/5">{service.description}</p>
-                                    <ConfigProvider
-                                        theme={{
-                                            components: {
-                                                Button: {
-                                                    defaultHoverBg: '#0176d5',
-                                                    defaultHoverColor: '#fff'
+                <motion.div
+                    variants={fadeIn({ direction: 'right', duration: 0.6, space: 60 })}
+                    initial="hidden"
+                    whileInView={'show'}
+                >
+                    <Row justify={'center'} className='flex gap-14 pt-20'>
+                        {services.slice(0, 3).map((service, index) => (
+                            <Col key={index} md={6} xs={24}  >
+                                <div className={`relative transition-opacity duration-1000 `}>
+                                    <Image preview={false} width={"150px"} src={service.icon} />
+                                    <div className='text-left text-black font-content text-lg min-h-[120px]'>
+                                        <h3 className="text-2xl font-bold text-black pt-6 ">{service.title}</h3>
+                                        <div className="h-1 w-16 bg-blue-700 my-2"></div>
+                                        <p className="mt-4 w-4/5">{service.description}</p>
+                                        <ConfigProvider
+                                            theme={{
+                                                components: {
+                                                    Button: {
+                                                        defaultHoverBg: '#0176d5',
+                                                        defaultHoverColor: '#fff'
+                                                    }
                                                 }
-                                            }
-                                        }}
-                                    >
-                                        <Button
-                                            iconPosition='end'
-                                            icon={<RightOutlined />}
-                                            style={{ border: '1px solid #0176d5' }}
-                                            className='mt-5 text-blue-800 font-bold rounded-3xl'>
-                                            Find out more
-                                        </Button>
-                                    </ConfigProvider>
+                                            }}
+                                        >
+                                            <Button
+                                                iconPosition='end'
+                                                icon={<RightOutlined />}
+                                                style={{ border: '1px solid #0176d5' }}
+                                                className='mt-5 text-blue-800 font-bold rounded-3xl'>
+                                                Find out more
+                                            </Button>
+                                        </ConfigProvider>
+                                    </div>
                                 </div>
-                            </div>
-
-                        </Col>
-                    ))}
-                </Row>
+                            </Col>
+                        ))}
+                    </Row>
+                </motion.div>
+                <motion.div
+                    variants={fadeIn({ direction: 'left', duration: 0.6, space: 60 })}
+                    initial="hidden"
+                    whileInView={'show'}
+                >
+                    <Row justify={'center'} className='flex gap-14 pt-20'>
+                        {services.slice(3, 6).map((service, index) => (
+                            <Col key={index} md={6} xs={24}  >
+                                <div className={`relative transition-opacity duration-1000 `}>
+                                    <Image preview={false} width={"150px"} src={service.icon} />
+                                    <div className='text-left text-black font-content text-lg min-h-[120px]'>
+                                        <h3 className="text-2xl font-bold text-black pt-6 ">{service.title}</h3>
+                                        <div className="h-1 w-16 bg-blue-700 my-2"></div>
+                                        <p className="mt-4 w-4/5">{service.description}</p>
+                                        <ConfigProvider
+                                            theme={{
+                                                components: {
+                                                    Button: {
+                                                        defaultHoverBg: '#0176d5',
+                                                        defaultHoverColor: '#fff'
+                                                    }
+                                                }
+                                            }}
+                                        >
+                                            <Button
+                                                iconPosition='end'
+                                                icon={<RightOutlined />}
+                                                style={{ border: '1px solid #0176d5' }}
+                                                className='mt-5 text-blue-800 font-bold rounded-3xl'>
+                                                Find out more
+                                            </Button>
+                                        </ConfigProvider>
+                                    </div>
+                                </div>
+                            </Col>
+                        ))}
+                    </Row>
+                </motion.div>
             </div>
         </Layout>
     );

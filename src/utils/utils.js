@@ -62,7 +62,7 @@ export const VietnameseProvinces = [
     "Hải Phòng",
     "Hà Nội",
     "TP Hồ Chí Minh"
-  ];
+];
 export const validationPatterns = {
     name: {
         pattern: /^[^\d\s][\p{L}'\s-]{4,49}$/u,
@@ -85,3 +85,23 @@ export const validationPatterns = {
         message: "Password must have at least 1 uppercase letter, 6 character, at least 1 number!"
     }
 };
+
+export const fadeIn = ({ direction, duration, delay, space }) => {
+    return {
+        hidden: {
+            y: direction === 'up' ? (space || 40) : direction === 'down' ? (-space || -40) : 0,
+            x: direction === 'left' ? (space || 40) : direction === 'right' ? (-space || -40) : 0,
+        },
+        show: {
+            y: 0,
+            x: 0,
+            opacity: 1,
+            transition: {
+                type: 'tween',
+                duration: duration ? duration : 1.3,
+                delay: delay ? delay : 0.1,
+                ease: [0.2, 0.2, 0.3, 0.3],
+            },
+        },
+    }
+}

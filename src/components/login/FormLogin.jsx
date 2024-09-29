@@ -74,7 +74,6 @@ const LoginForm = ({ handleFogot }) => {
   return (
     <div className="form-container">
       <Form form={form} onFinish={handleSubmit}>
-        {/* <Form form={form}> */}
         {error && (
           <>
             <Alert message={error} type="error" showIcon />
