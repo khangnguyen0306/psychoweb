@@ -12,33 +12,33 @@ import { motion } from 'framer-motion';
 import { fadeIn } from '../../../utils/utils';
 const services = [
     {
-        title: 'Clinical Psychology',
-        description: 'Diagnosing and treating psychological disorders using scientific methods.',
+        title: 'Tâm lý học lâm sàng',
+        description: 'Chẩn đoán và điều trị các rối loạn tâm lý bằng các phương pháp khoa học.',
         icon: Clinical
     },
     {
-        title: 'Psychological Counseling',
-        description: 'Helping you resolve personal issues and develop yourself.',
+        title: 'Tư vấn tâm lý',
+        description: 'Giúp bạn giải quyết các vấn đề cá nhân và phát triển bản thân.',
         icon: Counseling
     },
     {
-        title: 'Marriage and Family Therapy',
-        description: 'Supporting couples and families in improving their relationships.',
+        title: 'Liệu pháp hôn nhân và gia đình',
+        description: 'Hỗ trợ các cặp vợ chồng và gia đình cải thiện mối quan hệ của họ.',
         icon: Marriage
     },
     {
-        title: 'Child and Adolescent Psychology',
-        description: 'Specialized psychology for children and adolescents.',
+        title: 'Tâm lý học trẻ em và thanh thiếu niên',
+        description: 'Tâm lý học chuyên biệt dành cho trẻ em và thanh thiếu niên.',
         icon: Child
     },
     {
-        title: 'Neuropsychology',
-        description: 'Focusing on the connection between the brain and behavior.',
+        title: 'Tâm lý thần kinh',
+        description: 'Tập trung vào mối liên hệ giữa não và hành vi.',
         icon: Brain
     },
     {
-        title: 'Group Therapy',
-        description: 'Therapy in a group setting to foster community support.',
+        title: 'Liệu pháp nhóm',
+        description: 'Liệu pháp trong môi trường nhóm để tạo sự hỗ trợ cộng đồng.',
         icon: team
     },
 ];
@@ -52,13 +52,13 @@ const Services = () => {
                 style={{ backgroundImage: 'url(https://path/to/your/image.jpg)' }}>
                 <div className="absolute inset-0 bg-white opacity-70 blur-sm"></div>
                 <div className="relative z-10 ml-16">
-                    <p className={`text-black text-xl mb-2 font-content pl-2 pb-8 tracking-wide transition-opacity duration-1000 `}>Our services</p>
-                    <p className={`text-black text-5xl mb-4 font-content tracking-wide transition-opacity duration-1000 `}>What services</p>
+                    <p className={`text-black text-xl mb-2 font-content pl-2 pb-8 tracking-wide transition-opacity duration-1000 `}>Dịch vụ của chúng tôi</p>
+                    <p className={`text-black text-5xl mb-4 font-content tracking-wide transition-opacity duration-1000 `}>Các dịch vụ</p>
                     <p className={`font-light mb-4 text-5xl text-white transition-transform duration-1000 `}>
-                        <span className='text-6xl text-[#0176d5] font-black'>Wellmeet offers?</span>
+                        <span className='text-6xl text-[#0176d5] font-black'>Wellmeet cung cấp?</span>
                     </p>
                     <div className={`h-1 w-24 bg-blue-700 transition-transform duration-1000 `}></div>
-                    <p className={`pt-10 font-content text-2xl w-3/4 leading-10 transition-transform duration-600 `}>Discover our comprehensive range of mental health services designed to support your well-being and enhance your quality of life.</p>
+                    <p className={`pt-10 font-content text-2xl w-3/4 leading-10 transition-transform duration-600 `}>Khám phá các dịch vụ sức khỏe tâm lý toàn diện của chúng tôi được thiết kế để hỗ trợ và nâng cao chất lượng cuộc sống của bạn.</p>
                 </div>
                 <motion.div
                     variants={fadeIn({ direction: 'right', duration: 0.6, space: 60 })}
@@ -89,7 +89,7 @@ const Services = () => {
                                                 icon={<RightOutlined />}
                                                 style={{ border: '1px solid #0176d5' }}
                                                 className='mt-5 text-blue-800 font-bold rounded-3xl'>
-                                                Find out more
+                                                Tìm hiểu thêm
                                             </Button>
                                         </ConfigProvider>
                                     </div>
@@ -127,7 +127,7 @@ const Services = () => {
                                                 icon={<RightOutlined />}
                                                 style={{ border: '1px solid #0176d5' }}
                                                 className='mt-5 text-blue-800 font-bold rounded-3xl'>
-                                                Find out more
+                                                Tìm hiểu thêm
                                             </Button>
                                         </ConfigProvider>
                                     </div>

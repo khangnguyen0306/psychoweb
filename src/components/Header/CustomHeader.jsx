@@ -6,6 +6,7 @@ import { DoubleRightOutlined, FacebookOutlined, FormOutlined, InstagramOutlined,
 import NameWeb from "../../../src/assets/image/logo.svg"
 import { logOut, selectCurrentToken } from "../../slices/auth.slice";
 import { useDispatch, useSelector } from "react-redux";
+
 const { Header } = Layout;
 const { useBreakpoint } = Grid;
 
@@ -31,10 +32,11 @@ const CustomHeader = () => {
     }, [prevScrollPos]);
 
     const handleLogout = useCallback(() => {
-        dispatch(logOut());     
+        dispatch(logOut());
+
         notification.success({
-            message: "Logout successfully",
-            description: "See you again!",
+            message: "Đăng xuất thành công",
+            description: "Hẹn gặp lại!",
             duration: 1.5
         });
         navigate("/login");
@@ -45,7 +47,7 @@ const CustomHeader = () => {
             key: '1',
             label: (
                 <Link to='/login' style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <p style={{ paddingRight: '20px' }}>Login</p> <LoginOutlined />
+                    <p style={{ paddingRight: '20px' }}>Đăng nhập</p> <LoginOutlined />
                 </Link>
             ),
         },
@@ -53,7 +55,7 @@ const CustomHeader = () => {
             key: '2',
             label: (
                 <Link to='/register' style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <p style={{ paddingRight: '20px' }}>Register</p> <FormOutlined />
+                    <p style={{ paddingRight: '20px' }}>Đăng ký</p> <FormOutlined />
                 </Link>
             ),
         },
@@ -64,7 +66,7 @@ const CustomHeader = () => {
             key: '1',
             label: (
                 <Link to='/profile' style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <p style={{ paddingRight: '20px' }}>Profile</p> <LoginOutlined />
+                    <p style={{ paddingRight: '20px' }}>Hồ sơ</p> <LoginOutlined />
                 </Link>
             ),
         },
@@ -72,7 +74,7 @@ const CustomHeader = () => {
             key: '2',
             label: (
                 <p onClick={handleLogout} style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <p style={{ paddingRight: '20px' }}>Log out</p> <LogoutOutlined />
+                    <p style={{ paddingRight: '20px' }}>Đăng xuất</p> <LogoutOutlined />
                 </p>
             ),
         },
@@ -89,23 +91,23 @@ const CustomHeader = () => {
                 {screens.md ? (
                     <Menu mode="horizontal" defaultSelectedKeys={["1"]} style={{ width: 'fit-content', backgroundColor: 'none', marginLeft: '2.2rem' }}>
                         <Menu.Item key="1">
-                            <Link to="/">Home</Link>
+                            <Link to="/">Trang chủ</Link>
                         </Menu.Item>
                         <Menu.Item key="2">
-                            <Link to="admin">About</Link>
+                            <Link to="admin">Giới thiệu</Link>
                         </Menu.Item>
                         <Menu.Item key="3">
-                            <Link to="/">Community</Link>
+                            <Link to="/">Cộng đồng</Link>
                         </Menu.Item>
                         <Menu.Item key="4">
-                            <Link to="home">Search</Link>
+                            <Link to="home">Tìm kiếm</Link>
                         </Menu.Item>
                         <Menu.Item key="5">
-                            <Link to="admin">Pricing</Link>
+                            <Link to="admin">Giá cả</Link>
                         </Menu.Item>
                     </Menu>
                 ) : (
-                    <Button className="menu-btn" onClick={() => setDrawerVisible(true)} style={{ marginRight: '40px' }} aria-label="Open menu">
+                    <Button className="menu-btn" onClick={() => setDrawerVisible(true)} style={{ marginRight: '40px' }} aria-label="Mở menu">
                         <MenuOutlined />
                     </Button>
                 )}
@@ -120,13 +122,13 @@ const CustomHeader = () => {
                     placement="bottom"
                     onOpenChange={(open) => setIsActive(open)}
                 >
-                    <Button className={`btn-user ${isActive ? 'active' : ''}`} aria-label="User menu">
+                    <Button className={`btn-user ${isActive ? 'active' : ''}`} aria-label="Menu người dùng">
                         <UserOutlined style={{ fontSize: '20px', color: isActive ? '#1f9bff' : '#000' }} />
                     </Button>
                 </Dropdown>
             </div>
             <Drawer
-                title="Navigation"
+                title="Điều hướng"
                 placement="right"
                 closable={false}
                 onClose={() => setDrawerVisible(false)}
@@ -139,19 +141,19 @@ const CustomHeader = () => {
                     onClick={() => setDrawerVisible(false)}
                 >
                     <Menu.Item key="1">
-                        <Link to="/">Home</Link>
+                        <Link to="/">Trang chủ</Link>
                     </Menu.Item>
                     <Menu.Item key="3">
-                        <Link to="admin">About</Link>
+                        <Link to="admin">Giới thiệu</Link>
                     </Menu.Item>
                     <Menu.Item key="4">
-                        <Link to="/">Community</Link>
+                        <Link to="/">Cộng đồng</Link>
                     </Menu.Item>
                     <Menu.Item key="5">
-                        <Link to="home">Search</Link>
+                        <Link to="home">Tìm kiếm</Link>
                     </Menu.Item>
                     <Menu.Item key="6">
-                        <Link to="admin">Pricing</Link>
+                        <Link to="admin">Giá cả</Link>
                     </Menu.Item>
                 </Menu>
             </Drawer>

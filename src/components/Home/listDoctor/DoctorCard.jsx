@@ -27,7 +27,7 @@ const DoctorCard = ({ doctor }) => {
             className="bg-pink-500 text-white"
           />
         </div>
-        <Button className="bg-blue-500 text-white">Read More <DoubleRightOutlined /></Button>
+        <Button className="bg-blue-500 text-white">Đọc Thêm <DoubleRightOutlined /></Button>
       </div>
     </Card>
   );

@@ -17,7 +17,8 @@ const Register = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (values) => {
-
+    // const { addUser } = useAddUserMutation();
+    values.role = "USER"
     try {
       const user = await registerUser(values);
       // console.log(user.error.data.message);
@@ -25,7 +26,7 @@ const Register = () => {
         message.error(user.error.data.message);
         return;
       }
-      message.success(user.data.message);
+      message.success("Tạo tài khoản thành công !");
       form.resetFields();
       navigate("/login");
       console.log(user);
@@ -43,7 +44,7 @@ const Register = () => {
           <div className='content-layout-register '>
             <div className='form-register'>
               <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                <h2 className="title-login">Sign Up</h2>
+                <h2 className="title-login">Đăng ký</h2>
               </div>
               <Form form={form} onFinish={handleSubmit}>
                 {/* <Form form={form}> */}
@@ -63,7 +64,7 @@ const Register = () => {
                 </Form.Item>
                 <Form.Item
                   hasFeedback
-                  label="Full name"
+                  label="Họ và Tên"
                   name="fullname"
                   rules={[
                     {
@@ -74,11 +75,11 @@ const Register = () => {
 
                   ]}
                 >
-                  <Input type="" placeholder="Full name" className="form-input" />
+                  <Input type="" placeholder="Họ và Tên" className="form-input" />
                 </Form.Item>
                 <Form.Item
                   hasFeedback
-                  label="Address"
+                  label="Địa chỉ"
                   name="address"
                   rules={[
                     {
@@ -89,11 +90,11 @@ const Register = () => {
 
                   ]}
                 >
-                  <Input type="" placeholder="Address" className="form-input" />
+                  <Input type="" placeholder="Địa chỉ" className="form-input" />
                 </Form.Item>
                 <Form.Item
                   hasFeedback
-                  label="Phone number"
+                  label="Số điện thoại"
                   name="phonenumber"
                   rules={[
                     {
@@ -103,30 +104,30 @@ const Register = () => {
                     },
                   ]}
                 >
-                  <Input type="" placeholder="Phone number" className="form-input" />
+                  <Input type="" placeholder="Số điện thoại" className="form-input" />
                 </Form.Item>
 
                 <Form.Item
                   hasFeedback
-                  label="Gender"
+                  label="Giới tính"
                   name="gender"
-                  rules={[{ required: true, message: "Please select gender!" }]}
+                  rules={[{ required: true, message: "Vui lòng chọn giới tính!" }]}
                 >
                   <Radio.Group>
-                    <Radio value={"Male"}>Male</Radio>
-                    <Radio value={"Female"}>Female</Radio>
+                    <Radio value={"Male"}>Nam</Radio>
+                    <Radio value={"Female"}>Nữ</Radio>
                   </Radio.Group>
                 </Form.Item>
                 <Form.Item
                   hasFeedback
-                  label="DOB"
+                  label="Ngày sinh"
                   name="dateOfBirth"
                   rules={[
-                    // { required: true, message: "Please select your date of birth!" },
+                    // { required: true, message: "Vui lòng chọn ngày sinh của bạn!" },
                     ({ getFieldValue }) => ({
                       validator(_, value) {
                         if (!value) {
-                          return Promise.reject(new Error("Please select a valid date of birth!"));
+                          return Promise.reject(new Error("Vui lòng chọn ngày sinh hợp lệ!"));
                         }
                         const selectedYear = value.year();
                         const nowYear = new Date().getFullYear();
@@ -135,9 +136,9 @@ const Register = () => {
                           return Promise.resolve();
                         } else {
                           if (yearChecked < 18) {
-                            return Promise.reject(new Error("You must be at least 18 years old!"));
+                            return Promise.reject(new Error("Bạn phải ít nhất 18 tuổi!"));
                           } else if (yearChecked > 100) {
-                            return Promise.reject(new Error("Invalid age! Please select a valid date of birth."));
+                            return Promise.reject(new Error("Tuổi không hợp lệ! Vui lòng chọn ngày sinh hợp lệ."));
                           }
                         }
                       },
@@ -163,7 +164,7 @@ const Register = () => {
                 </Form.Item>
                 <Form.Item
                   hasFeedback
-                  label="Password"
+                  label="Mật khẩu"
                   name="password"
                   rules={[
                     {
@@ -174,28 +175,28 @@ const Register = () => {
                     }
                   ]}
                 >
-                  <Input.Password placeholder="Password" className="form-input"
+                  <Input.Password placeholder="Mật khẩu" className="form-input"
                     iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                   />
                 </Form.Item>
                 <Form.Item
                   hasFeedback
-                  label="Re-Type Password"
+                  label="Nhập lại mật khẩu"
                   name="retypePassword"
                   rules={[
-                    { required: true, message: 'Please re-type the password!' },
+                    { required: true, message: 'Vui lòng nhập lại mật khẩu!' },
                     ({ getFieldValue }) => ({
                       validator(_, value) {
                         if (!value || getFieldValue('password') === value) {
                           return Promise.resolve();
                         }
-                        return Promise.reject(new Error('The passwords do not match!'));
+                        return Promise.reject(new Error('Mật khẩu không khớp!'));
                       },
                     }),
                   ]}
                 >
                   <Input.Password
-                    placeholder="Re-type password"
+                    placeholder="Nhập lại mật khẩu"
                     iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                   />
                 </Form.Item>
@@ -208,23 +209,23 @@ const Register = () => {
                         htmlType="submit"
                         className="submit-btn"
                       >
-                        Register
+                        Đăng ký
                       </button>
 
                       <div style={{ marginLeft: '2rem' }}>
-                        <span>Already have account ?</span>
-                        <Link to={"/login"}><span style={{ fontSize: '16px', marginLeft: '16px' }}>Login</span> </Link>
+                        <span>Đã có tài khoản?</span>
+                        <Link to={"/login"}><span style={{ fontSize: '16px', marginLeft: '16px' }}>Đăng nhập</span> </Link>
                       </div>
 
                     </div>
 
                   ) : ( */}
                   <div className='flex items-center pt-6 mt-1'>
-                    <Button className="w-36  h-14" type='primary' loading={isLoading} htmlType='submit' >Register</Button>
+                    <Button className="w-36  h-14" type='primary' loading={isLoading} htmlType='submit' >Đăng ký</Button>
 
                     <div style={{ marginLeft: '2rem' }}>
-                      <span>Already have account ?</span>
-                      <Link to={"/login"}><span style={{ fontSize: '16px', marginLeft: '16px' }}>Login</span> </Link>
+                      <span>Đã có tài khoản?</span>
+                      <Link to={"/login"}><span style={{ fontSize: '16px', marginLeft: '16px' }}>Đăng nhập</span> </Link>
                     </div>
                   </div>
                   {/* )} */}

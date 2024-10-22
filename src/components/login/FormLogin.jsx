@@ -2,23 +2,20 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Form, Input, Button, Alert, notification, message } from "antd";
 import "./Login.scss";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import { EyeInvisibleOutlined, EyeTwoTone, LockFilled, LockOutlined, SmileFilled, SmileOutlined, UserOutlined } from "@ant-design/icons";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { EyeInvisibleOutlined, EyeTwoTone, LockOutlined, SmileOutlined, UserOutlined } from "@ant-design/icons";
 import { useLoginUserMutation } from "../../services/authAPI";
 import { setToken, setUser } from "../../slices/auth.slice";
 
-
-
-
 const LoginForm = ({ handleFogot }) => {
+
   const [form] = Form.useForm();
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
-  const location = useLocation()
+  const location = useLocation();
   const navigate = useNavigate();
 
   const [loginUser, { isLoading }] = useLoginUserMutation();
-
 
   const handleLoginSuccess = (data) => {
     const user = data.data.user;
@@ -28,11 +25,11 @@ const LoginForm = ({ handleFogot }) => {
     dispatch(setToken(token));
 
     notification.success({
-      message: "Login successfully",
+      message: "Đăng nhập thành công",
       duration: 2,
       description: (
         <div>
-          Welcome {user.userName} <SmileOutlined />
+          Chào mừng {user.userName} <SmileOutlined />
         </div>
       ),
     });
@@ -43,13 +40,12 @@ const LoginForm = ({ handleFogot }) => {
 
   const handleLoginFailure = (error, email) => {
     if (error.data) {
-      setError(error.data.message); // Set error message
-      // message.error(error.data.message);
+      setError(error.data.message); 
     } else {
-      setError("Invalid email or password. Try again!"); // Set default error message
+      setError("Email hoặc mật khẩu không hợp lệ. Vui lòng thử lại!"); 
       notification.error({
-        message: "Login error",
-        description: "Invalid email or password. Try again!",
+        message: "Lỗi đăng nhập",
+        description: "Email hoặc mật khẩu không hợp lệ. Vui lòng thử lại!",
       });
     }
 
@@ -66,8 +62,8 @@ const LoginForm = ({ handleFogot }) => {
         handleLoginFailure(result.error, values.email);
       }
     } catch (error) {
-      console.error("Login error:", error);
-      message.error("An unexpected error occurred. Please try again later.");
+      console.error("Lỗi đăng nhập:", error);
+      message.error("Đã xảy ra lỗi không mong muốn. Vui lòng thử lại sau.");
     }
   };
 
@@ -81,45 +77,34 @@ const LoginForm = ({ handleFogot }) => {
           </>
         )}
         <Form.Item
-
           style={{ marginBottom: '2rem' }}
           name="email"
-          rules={[{ required: true, message: "Please input your Email" }]}
-        // rules={[
-        //   {
-        //     required: true,
-        //     pattern: /^[\w-]+(\.[\w-]+)*@(gmail\.com|fpt\.edu\.vn)$/,
-        //     message: "Please input valid Email!",
-        //   },
-        // ]}
+          rules={[{ required: true, message: "Vui lòng nhập Email của bạn" }]}
         >
           <Input placeholder="   Email" size="large" className="form-input" prefix={<UserOutlined />} />
         </Form.Item>
 
         <Form.Item
           name="password"
-          rules={[{ required: true, message: "Please input your password" }]}
+          rules={[{ required: true, message: "Vui lòng nhập mật khẩu của bạn" }]}
         >
           <Input.Password
-            placeholder="  Password"
+            placeholder="  Mật khẩu"
             size="large" className="form-input"
             prefix={<LockOutlined />}
             iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
           />
         </Form.Item>
-        <p style={{ width: '100%', textAlign: 'end' }}><Link style={{ fontSize: '16px' }} onClick={handleFogot} > Forgot password</Link></p>
+        <p style={{ width: '100%', textAlign: 'end' }}><Link style={{ fontSize: '16px' }} onClick={handleFogot} > Quên mật khẩu</Link></p>
         <Form.Item>
-
           <Button
             type="primary"
             htmlType="submit"
             loading={isLoading}
             size="large"
-            // className="submit-btn"
             className="w-full mt-6 h-14"
-            
           >
-            Login
+            Đăng nhập
           </Button>
         </Form.Item>
       </Form>

@@ -8,6 +8,7 @@ import Profile from '../../components/profile/profile';
 const { Sider, Content } = Layout;
 
 const ProfilePage = () => {
+    
     const [selectedKey, setSelectedKey] = useState('1');
     const [collapsed, setCollapsed] = useState(false);
 

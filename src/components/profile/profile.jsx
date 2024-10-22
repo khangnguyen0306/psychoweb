@@ -1,24 +1,33 @@
 import React from 'react';
-import { Layout, Card, Form, Input, Button, DatePicker, Select } from 'antd';
+import { Layout, Card, Form, Input, Button, DatePicker, Select, Skeleton, message } from 'antd';
 import { UserOutlined, MailOutlined, PhoneOutlined, HomeOutlined, LockOutlined, ManOutlined, WomanOutlined } from '@ant-design/icons';
+import { useEditProfileMutation, useGetUserProfileQuery } from '../../services/userAPI';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '../../slices/auth.slice';
+import moment from 'moment';
+import dayjs from 'dayjs';
 
 const { Content } = Layout;
 const { Option } = Select;
 
 const Profile = () => {
-    const user = {
-        fullname: 'John Doe',
-        email: 'john.doe@example.com',
-        // dateOfBirth: '1990-01-01',
-        phoneNumber: '123-456-7890',
-        address: '123 Main St, Anytown, USA',
-        gender: 'male',
-    };
+    const userLocal = useSelector(selectCurrentUser)
+    const { data: userData, isLoading, error, refetch } = useGetUserProfileQuery(userLocal.id);
+    const [editUProfile, { isLoading: isLoadingEdit }] = useEditProfileMutation()
 
-    const onFinish = (values) => {
-        console.log('Received values of form: ', values);
+    console.log(userData)
+    const onFinish = async (values) => {
+        try {
+            await editUProfile({ body: values, userId: userLocal.id }).unwrap();
+            message.success("Cập nhật thông tin thành công !")
+            refetch();
+        } catch (error) {
+            message.error("Cập nhật thông tin thất bại !")
+        }
     };
-
+    if (isLoading) {
+        return <Skeleton active />
+    }
     return (
         <Layout className="min-h-screen w-full flex justify-center items-center bg-gray-100">
             <Content className="w-full max-w-lg p-6">
@@ -27,12 +36,12 @@ const Profile = () => {
                     <Form
                         name="profile"
                         initialValues={{
-                            fullname: user.fullname,
-                            email: user.email,
-                            dateOfBirth: user.dateOfBirth,
-                            phoneNumber: user.phoneNumber,
-                            address: user.address,
-                            gender: user.gender,
+                            fullname: userData?.data?.fullname || '',
+                            email: userData?.data?.email || '',
+                            dateOfBirth: userData?.data?.dateOfBirth ? dayjs(userData.data.dateOfBirth) : null,
+                            phoneNumber: userData?.data?.phonenumber || '',
+                            address: userData?.data?.address || '',
+                            gender: userData?.data?.gender.toLowerCase() || '',
                         }}
                         onFinish={onFinish}
                         layout="vertical"
@@ -49,14 +58,7 @@ const Profile = () => {
                             label="Email"
                             rules={[{ required: true, message: 'Please input your email!' }]}
                         >
-                            <Input prefix={<MailOutlined />} placeholder="Email" />
-                        </Form.Item>
-                        <Form.Item
-                            name="password"
-                            label="Password"
-                            rules={[{ required: true, message: 'Please input your password!' }]}
-                        >
-                            <Input.Password prefix={<LockOutlined />} placeholder="Password" />
+                            <Input readOnly prefix={<MailOutlined />} placeholder="Email" />
                         </Form.Item>
                         <Form.Item
                             name="dateOfBirth"
@@ -90,7 +92,7 @@ const Profile = () => {
                             </Select>
                         </Form.Item>
                         <Form.Item>
-                            <Button type="primary" htmlType="submit" className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600">
+                            <Button type="primary" loading={isLoadingEdit} htmlType="submit" className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600">
                                 Save Changes
                             </Button>
                         </Form.Item>

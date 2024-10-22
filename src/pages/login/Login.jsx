@@ -2,7 +2,6 @@ import { Button, Col, Divider, Form, Image, Input, Layout, message, Row, Space }
 import "./../../components/login/Login.scss";
 
 import { useSelector } from "react-redux";
-// import { selectCurrenToken } from "../../slices/auth.slice";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -12,17 +11,19 @@ import LoginForm from "../../components/login/FormLogin.jsx";
 import { selectCurrentToken } from "../../slices/auth.slice.js";
 import { useResetPasswordMutation, useVerifyOtpMutation } from "../../services/authAPI.js";
 import { useForm } from "antd/es/form/Form.js";
+
 function Login() {
   const token = useSelector(selectCurrentToken);
   const navigate = useNavigate();
-  const [isSendOTP, setIsSendOTP] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [isLoadingSendOTP, setIsLoadingSendOTP] = useState(false)
-  const [isLoadingResetPassword, setIsLoadingResetPassword] = useState(false)
+  const [isSendOTP, setIsSendOTP] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingSendOTP, setIsLoadingSendOTP] = useState(false);
+  const [isLoadingResetPassword, setIsLoadingResetPassword] = useState(false);
   const [isFogotPasswords, setIsFogotPasswords] = useState(false);
-  const [sendOtp, { isLoadingSending }] = useVerifyOtpMutation()
-  const [resetPas] = useResetPasswordMutation()
+  const [sendOtp, { isLoadingSending }] = useVerifyOtpMutation();
+  const [resetPas] = useResetPasswordMutation();
   const [form] = useForm();
+
   useEffect(() => {
     if (token) {
       navigate("/");
@@ -31,20 +32,19 @@ function Login() {
 
   const setFogotPassword = () => {
     setIsFogotPasswords(!isFogotPasswords);
-  }
+  };
 
   const handleSendOtp = async (values) => {
     setIsLoadingSendOTP(true);
     try {
       const response = await sendOtp(values).unwrap();
-      console.log(response)
-      if (response.code == 200) {
+
+      if (response.code === 200) {
         setIsSendOTP(true);
       }
     } catch (error) {
-      console.error("Failed to send OTP:", error);
-    }
-    finally {
+
+    } finally {
       setIsLoadingSendOTP(false);
     }
   };
@@ -53,14 +53,13 @@ function Login() {
     setIsLoadingResetPassword(true);
     try {
       const response = await resetPas({ token: values.otp, newPassword: values.newPassword }).unwrap();
-      console.log(response)
-      message.success("Password reset successful! ")
+      console.log(response);
+      message.success("Đặt lại mật khẩu thành công!");
       setFogotPassword();
       form.resetFields();
     } catch (error) {
-      console.error("Failed to send OTP:", error);
-    }
-    finally {
+      console.error("Đặt lại mật khẩu không thành công:", error);
+    } finally {
       setIsLoadingResetPassword(false);
     }
   };
@@ -77,14 +76,12 @@ function Login() {
             <div className="login-page">
               <Space>
                 <Row>
-                  <Col style={{ padding: ' 6rem 14rem' }}>
+                  <Col style={{ padding: '6rem 14rem' }}>
                     {isFogotPasswords ? (
                       <>
                         <div className="p-[43px]">
-                          <Button className="absolute left-7 top-16" icon={<BackwardOutlined />} onClick={setFogotPassword}>Back to Login</Button>
-                          <h1 className="title-login">
-                            Forgot Password
-                          </h1>
+                          <Button className="absolute left-7 top-16" icon={<BackwardOutlined />} onClick={setFogotPassword}>Quay lại đăng nhập</Button>
+                          <h1 className="title-login">Quên mật khẩu</h1>
                           <div className="form-login">
 
                             {!isSendOTP ? (
@@ -94,7 +91,7 @@ function Login() {
                                   rules={[
                                     {
                                       type: 'email',
-                                      message: 'The input is not valid E-mail!',
+                                      message: 'Địa chỉ email không hợp lệ!',
                                     },
                                   ]}
                                 >
@@ -102,7 +99,7 @@ function Login() {
                                 </Form.Item>
 
                                 <Button type="primary" htmlType="submit" loading={isLoadingSendOTP}>
-                                  Send reset link
+                                  Gửi liên kết đặt lại
                                 </Button>
                               </Form>
                             ) : (
@@ -110,37 +107,37 @@ function Login() {
                               <Form onFinish={handleResetPass}>
                                 <Form.Item
                                   name="otp"
-                                  rules={[{ required: true, message: 'Please input the OTP!' }]}
+                                  rules={[{ required: true, message: 'Vui lòng nhập OTP!' }]}
                                 >
-                                  <Input placeholder="Enter OTP" />
+                                  <Input placeholder="Nhập OTP" />
                                 </Form.Item>
                                 <Form.Item
                                   name="newPassword"
-                                  rules={[{ required: true, message: 'Please input your new password!' }]}
+                                  rules={[{ required: true, message: 'Vui lòng nhập mật khẩu mới!' }]}
                                 >
-                                  <Input.Password placeholder="New Password" />
+                                  <Input.Password placeholder="Mật khẩu mới" />
                                 </Form.Item>
                                 <Form.Item
                                   name="confirmPassword"
                                   dependencies={['newPassword']}
                                   hasFeedback
                                   rules={[
-                                    { required: true, message: 'Please confirm your password!' },
+                                    { required: true, message: 'Vui lòng xác nhận mật khẩu!' },
                                     ({ getFieldValue }) => ({
                                       validator(_, value) {
                                         if (!value || getFieldValue('newPassword') === value) {
                                           return Promise.resolve();
                                         }
-                                        return Promise.reject(new Error('The two passwords do not match!'));
+                                        return Promise.reject(new Error('Hai mật khẩu không khớp!'));
                                       },
                                     }),
                                   ]}
                                 >
-                                  <Input.Password placeholder="Confirm Password" />
+                                  <Input.Password placeholder="Xác nhận mật khẩu" />
                                 </Form.Item>
 
-                                <Button type="primary" htmlType="submit" loading={isLoadingResetPassword}> 
-                                  Verify OTP and Reset Password
+                                <Button type="primary" htmlType="submit" loading={isLoadingResetPassword}>
+                                  Xác minh OTP và đặt lại mật khẩu
                                 </Button>
                               </Form>
                             )}
@@ -150,19 +147,15 @@ function Login() {
                       </>
                     ) : (
                       <>
-
-                        <h1 className="title-login">
-                          Sign in
-                        </h1>
+                        <h1 className="title-login">Đăng nhập</h1>
                         <div className="form-login">
                           <LoginForm handleFogot={setFogotPassword} />
-                          <Divider plain style={{ padding: '15px' }}><span>Or</span></Divider>
+                          <Divider plain style={{ padding: '15px' }}><span>Hoặc</span></Divider>
 
                           <div style={{ textAlign: 'center' }}>
-                            <p>You don't have an account? <Link style={{ fontSize: '16px', padding: '10px' }} to={"/register"} > Sign up</Link> </p>
+                            <p>Bạn chưa có tài khoản? <Link style={{ fontSize: '16px', padding: '10px' }} to={"/register"}> Đăng ký</Link></p>
                           </div>
                         </div>
-
                       </>
                     )}
                   </Col>

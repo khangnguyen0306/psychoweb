@@ -4,66 +4,65 @@ import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 
 const Slider = () => {
     useEffect(() => {
-        const moveToNextItem = () => {
-            let lists = document.querySelectorAll('.item');
-            document.getElementById('slide').appendChild(lists[0]);
+        const diChuyenDenMucTiepTheo = () => {
+            let danhSach = document.querySelectorAll('.item');
+            document.getElementById('slide').appendChild(danhSach[0]);
         };
 
-        const moveToPreviousItem = () => {
-            let lists = document.querySelectorAll('.item');
-            document.getElementById('slide').prepend(lists[lists.length - 1]);
+        const diChuyenDenMucTruocDo = () => {
+            let danhSach = document.querySelectorAll('.item');
+            document.getElementById('slide').prepend(danhSach[danhSach.length - 1]);
         };
 
-        // Slider functionality for the 'Next' button
-        document.getElementById('next').onclick = moveToNextItem;
+        // Chức năng chuyển slider khi bấm 'Tiếp'
+        document.getElementById('next').onclick = diChuyenDenMucTiepTheo;
 
-        // Slider functionality for the 'Previous' button
-        document.getElementById('prev').onclick = moveToPreviousItem;
+        // Chức năng chuyển slider khi bấm 'Trước'
+        document.getElementById('prev').onclick = diChuyenDenMucTruocDo;
 
-        // Automatically move to the next item every 5 seconds
-        const interval = setInterval(moveToNextItem, 5000);
+        // Tự động chuyển sang mục tiếp theo mỗi 5 giây
+        const interval = setInterval(diChuyenDenMucTiepTheo, 5000);
 
-        // Cleanup the interval on component unmount
+        // Xóa interval khi component bị hủy
         return () => clearInterval(interval);
     }, []);
 
     return (
-    
-        <div className="container" >
+        <div className="container">
             <div id="slide">
                 <div className="item item1">
                     <div className="content">
-                        <div className="name">Listening to Your Soul</div>
-                        <div className="des">We are always ready to listen and accompany you through all mental challenges.</div>
-                        <button className='button-more'>Explore Now</button>
+                        <div className="name">Lắng Nghe Tâm Hồn Bạn</div>
+                        <div className="des">Chúng tôi luôn sẵn sàng lắng nghe và đồng hành cùng bạn vượt qua mọi thử thách tinh thần.</div>
+                        <button className='button-more'>Khám Phá Ngay</button>
                     </div>
                 </div>
                 <div className="item item2">
                     <div className="content">
-                        <div className="name">Mental Health Matters</div>
-                        <div className="des">Don't ignore the signs of stress, anxiety, or depression. Let us help you.</div>
-                        <button className='button-more'>Learn More</button>
+                        <div className="name">Sức Khỏe Tâm Thần Quan Trọng</div>
+                        <div className="des">Đừng bỏ qua các dấu hiệu của căng thẳng, lo âu hoặc trầm cảm. Chúng tôi sẽ giúp bạn.</div>
+                        <button className='button-more'>Tìm Hiểu Thêm</button>
                     </div>
                 </div>
                 <div className="item item3">
                     <div className="content">
-                        <div className="name">Top Psychological Experts</div>
-                        <div className="des">Our team of experts is well-trained and dedicated to your well-being.</div>
-                        <button className='button-more'>Book a Consultation</button>
+                        <div className="name">Chuyên Gia Tâm Lý Hàng Đầu</div>
+                        <div className="des">Đội ngũ chuyên gia của chúng tôi được đào tạo bài bản và luôn hết lòng vì sức khỏe của bạn.</div>
+                        <button className='button-more'>Đặt Lịch Tư Vấn</button>
                     </div>
                 </div>
                 <div className="item item4">
                     <div className="content">
-                        <div className="name">Effective Treatment Methods</div>
-                        <div className="des">We apply the most advanced treatment methods tailored to each individual.</div>
-                        <button className='button-more'>See Methods</button>
+                        <div className="name">Phương Pháp Điều Trị Hiệu Quả</div>
+                        <div className="des">Chúng tôi áp dụng những phương pháp điều trị tiên tiến nhất phù hợp với từng cá nhân.</div>
+                        <button className='button-more'>Xem Phương Pháp</button>
                     </div>
                 </div>
                 <div className="item item5">
                     <div className="content">
-                        <div className="name">Support 24/7</div>
-                        <div className="des">We are always here, no matter the time, to help you through tough moments.</div>
-                        <button className='button-more'>Contact Now</button>
+                        <div className="name">Hỗ Trợ 24/7</div>
+                        <div className="des">Chúng tôi luôn ở đây, bất kể thời gian, để giúp bạn vượt qua những khoảnh khắc khó khăn.</div>
+                        <button className='button-more'>Liên Hệ Ngay</button>
                     </div>
                 </div>
             </div>
