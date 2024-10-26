@@ -3,18 +3,19 @@ import { DoubleRightOutlined, FacebookOutlined, InstagramOutlined } from '@ant-d
 import { Button, Card, Image } from 'antd';
 
 const DoctorCard = ({ doctor }) => {
+  console.log(doctor)
   return (
     <Card className="p-4 shadow-lg hover:shadow-cyan-200">
       <Image
-        src={doctor.imageUrl}
-        alt={doctor.name}
+        src={"https://t3.ftcdn.net/jpg/02/60/04/08/360_F_260040863_fYxB1SnrzgJ9AOkcT0hoe7IEFtsPiHAD.jpg"} //////////chua co anh
+        alt={doctor.fullname}
         className="w-[200px] h-12 mx-auto"
       />
       <div className='w-[350px]'>
-        <p className=" text-blue-500 mt-4 font-content text-lg">{doctor.degree}</p>
+        <p className=" text-blue-500 mt-4 font-content text-lg">{doctor.specialization}</p>
         <hr className="my-2 w-12 border-blue-500" />
-        <p className=" text-xl font-bold pt-1 pb-2">{doctor.name}</p>
-        <p className="text-left text-gray-500">{doctor.introduction}</p>
+        <p className=" text-xl font-bold pt-1 pb-2">{doctor.fullname}</p>
+        <p className="text-left text-gray-500">{doctor.bio}</p>
       </div>
       <div className="flex justify-between items-center mt-4">
         <div className="flex space-x-4 mt-2">

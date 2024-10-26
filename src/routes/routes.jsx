@@ -8,6 +8,9 @@ import ManagerGuard from "./ManagerGuard";
 
 const Login = Loadable({ loader: () => import("../pages/login/Login") });
 const Register = Loadable({ loader: () => import("../pages/register/Register") });
+const DoctorPage = Loadable({ loader: () => import("../pages/doctor/DoctorPage") });
+const DoctorDetailPage = Loadable({ loader: () => import("../pages/doctor/DoctorDetail") });
+const BookingPage = Loadable({ loader: () => import("../pages/doctor/bookingPage") });
 const Profile = Loadable({
   loader: () => import("../pages/profile/profile"),
 });
@@ -32,16 +35,25 @@ export const router = createBrowserRouter([
     element: Register,
   },
   {
+    path: "/doctor",
+    element: DoctorPage,
+  },
+  {
+    path: "/doctor/:dtId",
+    element: DoctorDetailPage,
+  },
+
+  {
     path: "/",
-    element: <MainLayout showFooter={false} />, 
+    element: <MainLayout showFooter={false} />,
     children: [
       {
-        index: true, 
+        index: true,
         element: Home,
       },
       {
         path: "/",
-        element: <AuthGuard />, 
+        element: <AuthGuard />,
         children: [
           {
             index: true,
@@ -49,18 +61,21 @@ export const router = createBrowserRouter([
           },
           {
             path: "profile",
-            element:Profile, 
-           
+            element: Profile,
+          },
+          {
+            path: "/booking",
+            element: BookingPage,
           },
         ],
       },
       {
         path: "admin",
-        element: <AuthGuard />, 
+        element: <AuthGuard />,
         children: [
           {
             index: false,
-            element: <AdminGuard />, 
+            element: <AdminGuard />,
             children: [
               {
                 index: true,
@@ -72,11 +87,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "manage-products",
-        element: <AuthGuard />, 
+        element: <AuthGuard />,
         children: [
           {
             index: false,
-            element: <ManagerGuard />, 
+            element: <ManagerGuard />,
             children: [
               {
                 index: true,

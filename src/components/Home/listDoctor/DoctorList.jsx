@@ -7,6 +7,7 @@ import { useInView } from 'react-intersection-observer';
 const DoctorList = () => {
     // Sử dụng hook truy vấn để lấy dữ liệu
     const { data: doctors, isLoading, error } = useGetAllDoctorQuery();
+    console.log(doctors)
     const { ref, inView } = useInView({
         triggerOnce: true,
         threshold: 0.3,
@@ -27,7 +28,7 @@ const DoctorList = () => {
             <div
                 ref={ref}
                 className={`flex justify-between gap-10 pr-10 pl-10 mt-10 transition-opacity duration-1000 ${inView ? 'animate-fadeInUp' : 'opacity-0'}`}>
-                {doctors.slice(0, 3).map((doctor) => (
+                {doctors.data.slice(0, 3).map((doctor) => (
                     <DoctorCard key={doctor.id} doctor={doctor} />
                 ))}
             </div>

@@ -1,29 +1,28 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { navigate } from "../utils/navigate";
 import { selectTokens } from "../slices/auth.slice";
-import { TEST_API_LOCAL } from "../config";
+import { BE_API_LOCAL } from "../config";
 
 export const doctorAPI = createApi({
   reducerPath: "doctorManagement",
-  tagTypes: ["DoctorList", "TransactionList", "NotificationList"],
+  tagTypes: ["DoctorList","ApoinmentList"],
   baseQuery: fetchBaseQuery({
-    baseUrl: TEST_API_LOCAL,
-
-    // prepareHeaders: (headers, { getState }) => {
-    //   const token = selectTokens(getState());
-    //   if (token) {
-    //     headers.append("Authorization", `Bearer ${token}`);
-    //   }
-    //   headers.append("Content-Type", "application/json");
-    //   return headers;
-    // },
+    baseUrl: BE_API_LOCAL,
+    prepareHeaders: (headers, { getState }) => {
+      const token = selectTokens(getState());
+      if (token) {
+        headers.append("Authorization", `Bearer ${token}`);
+      }
+      headers.append("Content-Type", "application/json");
+      return headers;
+    },
   }),
   endpoints: (builder) => ({
     getAllDoctor: builder.query({
-      query: () => `doctor`,
+      query: () => `getlist`,
       providesTags: (result) =>
         result
-          ? result.map(({ id }) => ({ type: "DoctorList", id }))
+          ? result?.data.map(({ id }) => ({ type: "DoctorList", id }))
           : [{ type: "DoctorList", id: "LIST" }],
     }),
 
@@ -33,33 +32,25 @@ export const doctorAPI = createApi({
         method: "GET",
       }),
     }),
-    // getUserProfileForOther: builder.query({
-    //   query: (userId) => ({
-    //     url: `users/getuserprofile/${userId}`,
-    //     method: "GET",
-    //   }),
-    // }),
-    // addUser: builder.mutation({
-    //   query: (body) => {
-    //     const newBody = {
-    //       address: body.address,
-    //       username: body.userName,
-    //       email: body.email,
-    //       phoneNumber: body.phoneNumber,
-    //       dob: body.dob,
-    //       roleId: body.roleId,
-    //       gender: body.gender,
-    //       status: body.status,
-    //       imgUrl: "https://static.vecteezy.com/system/resources/previews/024/983/914/original/simple-user-default-icon-free-png.png",
-    //     }
-    //     return {
-    //       method: "POST",
-    //       url: `auth/admin-create-account`,
-    //       body: newBody,
-    //     }
-    //   },
-    //   invalidatesTags: [{ type: "UserList", id: "LIST" }],
-    // }),
+
+    getDoctorDetail: builder.query({
+      query: (userId) => ({
+        url: `/${userId}`,
+        method: "GET",
+      }),
+    }),
+
+    BookingApointment: builder.mutation({
+      query: (body) => {
+        return {
+          method: "POST",
+          url: `appointment/create`,
+          body: body,
+        }
+      },
+      invalidatesTags: [{ type: "ApoinmentList", id: "LIST" }],
+    }),
+
     // editUser: builder.mutation({
     //   query: (payload) => {
     //     const newBody = {
@@ -147,15 +138,17 @@ export const doctorAPI = createApi({
 
 export const {
   useGetAllDoctorQuery,
-//   useGetUserProfileQuery,
-//   useEditProfileMutation,
-//   useAddUserMutation,
-//   useEditUserMutation,
-//   useDeleteUserMutation,
-//   useBanUserMutation,
-//   useUnBanUserMutation,
-//   useGetUserProfileForOtherQuery,
-//   useGetAllTransactionQuery,
-//   useUpdatePasswordMutation,
-//   useGetAllNotificationQuery
+  useGetDoctorDetailQuery,
+  useBookingApointmentMutation
+  //   useGetUserProfileQuery,
+  //   useEditProfileMutation,
+  //   useAddUserMutation,
+  //   useEditUserMutation,
+  //   useDeleteUserMutation,
+  //   useBanUserMutation,
+  //   useUnBanUserMutation,
+  //   useGetUserProfileForOtherQuery,
+  //   useGetAllTransactionQuery,
+  //   useUpdatePasswordMutation,
+  //   useGetAllNotificationQuery
 } = doctorAPI;

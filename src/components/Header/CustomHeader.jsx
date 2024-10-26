@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Button, Layout, Menu, Drawer, Grid, Image, Dropdown, notification } from "antd";
 import "./CustomHeader.scss";
 import { DoubleRightOutlined, FacebookOutlined, FormOutlined, InstagramOutlined, LoginOutlined, LogoutOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
@@ -16,9 +16,11 @@ const CustomHeader = () => {
     const [visible, setVisible] = useState(true);
     const [drawerVisible, setDrawerVisible] = useState(false);
     const [isActive, setIsActive] = useState(false);
+    const [activeTab, setActiveTab] = useState("1");
     const user = useSelector(selectCurrentToken);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -81,7 +83,7 @@ const CustomHeader = () => {
     ], [handleLogout]);
 
     return (
-        <Header id="header" className={visible ? "show" : "hidden"} style={{ zIndex: '1000' }}>
+        <Header id="header" className={`${visible} ? "show" : "hidden" w-full`} style={{ zIndex: '1000' }} >
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Link to={"/"} style={{ marginLeft: '6rem' }}>
                     <div className="header-logo">
@@ -89,20 +91,20 @@ const CustomHeader = () => {
                     </div>
                 </Link>
                 {screens.md ? (
-                    <Menu mode="horizontal" defaultSelectedKeys={["1"]} style={{ width: 'fit-content', backgroundColor: 'none', marginLeft: '2.2rem' }}>
-                        <Menu.Item key="1">
-                            <Link to="/">Trang chủ</Link>
+                    <Menu mode="horizontal"  selectedKeys={[location.pathname]} style={{ width: 'fit-content', backgroundColor: 'none', marginLeft: '2.2rem' }}>
+                        <Menu.Item key="/">
+                            <NavLink exact to="/" activeClassName="active">Trang chủ</NavLink>
                         </Menu.Item>
-                        <Menu.Item key="2">
-                            <Link to="admin">Giới thiệu</Link>
+                        <Menu.Item key="/doctor" >
+                            <NavLink to="/doctor" activeClassName="active">Bác sĩ</NavLink>
                         </Menu.Item>
-                        <Menu.Item key="3">
+                        <Menu.Item key="2" >
+                            <NavLink to="admin">Giới thiệu</NavLink>
+                        </Menu.Item>
+                        <Menu.Item key="3" onClick={() => { setActiveTab("3"); setDrawerVisible(false); }}>
                             <Link to="/">Cộng đồng</Link>
                         </Menu.Item>
-                        <Menu.Item key="4">
-                            <Link to="home">Tìm kiếm</Link>
-                        </Menu.Item>
-                        <Menu.Item key="5">
+                        <Menu.Item key="5" onClick={() => { setActiveTab("5"); setDrawerVisible(false); }}>
                             <Link to="admin">Giá cả</Link>
                         </Menu.Item>
                     </Menu>
@@ -128,6 +130,7 @@ const CustomHeader = () => {
                 </Dropdown>
             </div>
             <Drawer
+                className="w-full"
                 title="Điều hướng"
                 placement="right"
                 closable={false}
@@ -140,19 +143,19 @@ const CustomHeader = () => {
                     style={{ width: '100%' }}
                     onClick={() => setDrawerVisible(false)}
                 >
-                    <Menu.Item key="1">
+                    <Menu.Item key="1" onClick={() => setActiveTab("1")}>
                         <Link to="/">Trang chủ</Link>
                     </Menu.Item>
-                    <Menu.Item key="3">
+                    <Menu.Item key="3" onClick={() => setActiveTab("3")}>
                         <Link to="admin">Giới thiệu</Link>
                     </Menu.Item>
-                    <Menu.Item key="4">
+                    <Menu.Item key="4" onClick={() => setActiveTab("4")}>
                         <Link to="/">Cộng đồng</Link>
                     </Menu.Item>
-                    <Menu.Item key="5">
+                    <Menu.Item key="5" onClick={() => setActiveTab("5")}>
                         <Link to="home">Tìm kiếm</Link>
                     </Menu.Item>
-                    <Menu.Item key="6">
+                    <Menu.Item key="6" onClick={() => setActiveTab("6")}>
                         <Link to="admin">Giá cả</Link>
                     </Menu.Item>
                 </Menu>
