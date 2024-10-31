@@ -4,7 +4,7 @@ import MainLayout from "../layout/MainLayout";
 import AuthGuard from "./AuthGuard";
 import AdminGuard from "./AdminGuard";
 import ManagerGuard from "./ManagerGuard";
-
+import MaintenancePage from "../components/MaintenancePage";
 
 const Login = Loadable({ loader: () => import("../pages/login/Login") });
 const Register = Loadable({ loader: () => import("../pages/register/Register") });
@@ -21,6 +21,15 @@ const Home = Loadable({
 const Admin = Loadable({
   loader: () => import("../pages/admin/Admin"),
 });
+const AdminUser = Loadable({
+  loader: () => import("../pages/admin/AdminUser"),
+});
+const PaymentConfirmation = Loadable({
+  loader: () => import("../components/PaymentConfirmation"),
+});
+const About = Loadable({
+  loader: () => import("../pages/About/About"),
+});
 // const ManageProducts = Loadable({
 //   loader: () => import("../pages/manage/ManageProducts"),
 // });
@@ -31,8 +40,16 @@ export const router = createBrowserRouter([
     element: Login,
   },
   {
+    path: "/payment-confirmation",
+    element: PaymentConfirmation,
+  },
+  {
     path: "/register",
     element: Register,
+  },
+  {
+    path: "/about",
+    element: About,
   },
   {
     path: "/doctor",
@@ -42,7 +59,27 @@ export const router = createBrowserRouter([
     path: "/doctor/:dtId",
     element: DoctorDetailPage,
   },
-
+  {
+    path: "admin",
+    element: <AuthGuard />,
+    children: [
+      {
+        index: false,
+        element: <AdminGuard />,
+        children: [
+          {
+            index: true,
+            element: Admin,
+          },
+          {
+            path: "users",
+            element: AdminUser,
+            
+          },
+        ],
+      },
+    ],
+  },
   {
     path: "/",
     element: <MainLayout showFooter={false} />,
@@ -69,22 +106,7 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      {
-        path: "admin",
-        element: <AuthGuard />,
-        children: [
-          {
-            index: false,
-            element: <AdminGuard />,
-            children: [
-              {
-                index: true,
-                element: Admin,
-              },
-            ],
-          },
-        ],
-      },
+     
       {
         path: "manage-products",
         element: <AuthGuard />,
@@ -105,6 +127,6 @@ export const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <div>ERROR</div>,
+    element: <MaintenancePage/>,
   },
 ]);

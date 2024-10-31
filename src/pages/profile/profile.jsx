@@ -8,7 +8,6 @@ import Profile from '../../components/profile/profile';
 const { Sider, Content } = Layout;
 
 const ProfilePage = () => {
-    
     const [selectedKey, setSelectedKey] = useState('1');
     const [collapsed, setCollapsed] = useState(false);
 
@@ -38,13 +37,13 @@ const ProfilePage = () => {
                     style={{ height: '100%', borderRight: 0 }}
                 >
                     <Menu.Item key="1" icon={<UserOutlined />}>
-                        Profile
+                        Hồ sơ cá nhân
                     </Menu.Item>
                     <Menu.Item key="2" icon={<HistoryOutlined />}>
-                        History Booking
+                        Lịch sử đặt lịch
                     </Menu.Item>
                     <Menu.Item key="3" icon={<LockOutlined />}>
-                        Privacy
+                        Quyền riêng tư
                     </Menu.Item>
                 </Menu>
             </Sider>

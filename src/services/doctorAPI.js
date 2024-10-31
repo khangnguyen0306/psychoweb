@@ -5,7 +5,7 @@ import { BE_API_LOCAL } from "../config";
 
 export const doctorAPI = createApi({
   reducerPath: "doctorManagement",
-  tagTypes: ["DoctorList","ApoinmentList"],
+  tagTypes: ["DoctorList", "ApoinmentList"],
   baseQuery: fetchBaseQuery({
     baseUrl: BE_API_LOCAL,
     prepareHeaders: (headers, { getState }) => {
@@ -46,109 +46,25 @@ export const doctorAPI = createApi({
           method: "POST",
           url: `appointment/create`,
           body: body,
-        }
+        };
       },
       invalidatesTags: [{ type: "ApoinmentList", id: "LIST" }],
     }),
 
-    // editUser: builder.mutation({
-    //   query: (payload) => {
-    //     const newBody = {
-    //       address: payload.body.address,
-    //       userName: payload.body.fullname,
-    //       phoneNumber: payload.body.phoneNumber,
-    //       dob: payload.body.dob,
-    //       gender: payload.body.gender,
-    //       imgUrl: payload.body.imgUrl,
-    //     }
-    //     return {
-    //       method: "PUT",
-    //       url: `users/` + payload.id,
-    //       body: newBody,
-    //     };
-    //   },
-    //   invalidatesTags: (res, err, arg) => [{ type: "UserList", id: arg.id }],
-    // }),
-    // editProfile: builder.mutation({
-    //   query: (payload) => {
-    //     return {
-    //       method: "PUT",
-    //       url: `users/` + payload.id,
-    //       body: payload.body,
-    //     };
-    //   },
-    //   invalidatesTags: (res, err, arg) => [{ type: "UserList", id: arg.id }],
-    // }),
-    // updatePassword: builder.mutation({
-    //   query: ({ userId, newPassword, oldPassword }) => {
-    //     return {
-    //       url: `users/updatepassword`,
-    //       method: "PUT",
-    //       body: { userId, newPassword, oldPassword },
-    //     };
-    //   },
-    // }),
-
-    // deleteUser: builder.mutation({
-    //   query: (payload) => {
-    //     return {
-    //       method: "DELETE",
-    //       url: `users/` + payload,
-    //     };
-    //   },
-    //   invalidatesTags: (_res, _err, _arg) => [
-    //     { type: "UserList", id: "LIST" },
-    //   ],
-    // }),
-    // getAllTransaction: builder.query({
-    //   query: () => `order/getallorder`,
-    //   providesTags: (result) =>
-    //     result
-    //       ? result.map(({ id }) => ({ type: "TransactionList", id }))
-    //       : [{ type: "TransactionList", id: "LIST" }],
-    // }),
-    // getAllNotification: builder.query({
-    //   query: (payload) => `notification/getnotificationbyuserid/` + payload,
-    //   providesTags: (result) =>
-    //     result
-    //       ? result.map(({ id }) => ({ type: "NotificationList", id }))
-    //       : [{ type: "NotificationList", id: "LIST" }],
-    // }),
-    // BanUser: builder.mutation({
-    //   query: (payload) => {
-    //     const reason = payload.reason;
-    //     return {
-    //       method: "PUT",
-    //       url: `bannedaccount/banuser/${payload.id}?reason=${reason}`,
-    //     };
-    //   },
-    //   invalidatesTags: (res, err, arg) => [{ type: "UserList", id: arg.id }],
-    // }),
-    // UnBanUser: builder.mutation({
-    //   query: (payload) => {
-    //     return {
-    //       method: "PUT",
-    //       url: `bannedaccount/unbanuser/${payload}`,
-    //     };
-    //   },
-    //   invalidatesTags: (res, err, arg) => [{ type: "UserList", id: arg.id }],
-    // }),
+    // Endpoint mới cho thanh toán cuộc hẹn
+    BookingAppointmentPay: builder.mutation({
+      query: (paymentData) => ({
+        method: "POST",
+        url: `appointment/pay`,
+        body: paymentData,
+      }),
+    }),
   }),
 });
 
 export const {
   useGetAllDoctorQuery,
   useGetDoctorDetailQuery,
-  useBookingApointmentMutation
-  //   useGetUserProfileQuery,
-  //   useEditProfileMutation,
-  //   useAddUserMutation,
-  //   useEditUserMutation,
-  //   useDeleteUserMutation,
-  //   useBanUserMutation,
-  //   useUnBanUserMutation,
-  //   useGetUserProfileForOtherQuery,
-  //   useGetAllTransactionQuery,
-  //   useUpdatePasswordMutation,
-  //   useGetAllNotificationQuery
+  useBookingApointmentMutation,
+  useBookingAppointmentPayMutation, // Hook mới cho thanh toán
 } = doctorAPI;
