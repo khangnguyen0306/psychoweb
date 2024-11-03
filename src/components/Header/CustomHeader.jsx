@@ -99,7 +99,7 @@ const CustomHeader = () => {
                             <NavLink to="/doctor" activeClassName="active">Bác sĩ</NavLink>
                         </Menu.Item>
                         <Menu.Item key="2" >
-                            <NavLink to="admin">Giới thiệu</NavLink>
+                            <NavLink to="/about">Giới thiệu</NavLink>
                         </Menu.Item>
                         <Menu.Item key="3" onClick={() => { setActiveTab("3"); setDrawerVisible(false); }}>
                             <Link to="/">Cộng đồng</Link>
@@ -147,7 +147,7 @@ const CustomHeader = () => {
                         <Link to="/">Trang chủ</Link>
                     </Menu.Item>
                     <Menu.Item key="3" onClick={() => setActiveTab("3")}>
-                        <Link to="admin">Giới thiệu</Link>
+                        <Link to="/about">Giới thiệu</Link>
                     </Menu.Item>
                     <Menu.Item key="4" onClick={() => setActiveTab("4")}>
                         <Link to="/">Cộng đồng</Link>

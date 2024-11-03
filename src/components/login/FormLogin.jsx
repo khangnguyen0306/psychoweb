@@ -34,7 +34,7 @@ const LoginForm = ({ handleFogot }) => {
       ),
     });
 
-    const from = location.state?.from || "/";
+    const from = user.role?.toUpperCase() === "ADMIN" ? "/admin" : location.state?.from || "/";
     navigate(from);
   };
 

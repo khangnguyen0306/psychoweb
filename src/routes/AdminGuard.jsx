@@ -6,10 +6,13 @@ const AdminGuard = () => {
   const user = useSelector(selectCurrentUser);
   const location = useLocation();
 
-  if (user?.roleId !== 1) {
-    return <Navigate to="/404" replace />;
+  // Check if the user role is "ADMIN"
+  if (!user || user.role !== "ADMIN") {
+    // Redirect to /404 if the user does not have admin rights
+    return <Navigate to="/404" replace state={{ from: location }} />;
   }
 
+  // If the user is an admin, render the child routes inside <Outlet />
   return <Outlet />;
 };
 
