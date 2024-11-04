@@ -1,45 +1,62 @@
-import React, { useState } from 'react';
-import { Breadcrumb, Card, Image, Layout, Row, Col, DatePicker, Button } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Breadcrumb, Card, Image, Layout, Row, Col, DatePicker, Button, Typography, Divider, message, Empty } from 'antd';
 import { HomeOutlined, UserOutlined } from '@ant-design/icons';
 import CustomHeader from '../../components/Header/CustomHeader';
 import CustomFooter from '../../components/Footer/CustomFooter';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { useGetDoctorDetailQuery, useBookingApointmentMutation } from '../../services/doctorAPI';
 
-const DoctorDetail = () => {
-    const doctorData = {
-        id: 2,
-        fullname: "Lê Quang Trọng",
-        email: "trongle278@gmail.com",
-        dateOfBirth: "2002-09-24T16:02:43.321",
-        phonenumber: "01887052354",
-        address: "7/20 Đường 385",
-        gender: "Nữ",
-        price: "1,300,000 VND",
-        userImage: "https://t3.ftcdn.net/jpg/02/60/04/08/360_F_260040863_fYxB1SnrzgJ9AOkcT0hoe7IEFtsPiHAD.jpg",
-        specialization: "Bác sĩ giỏi nhất",
-        bio: "Xin chào, tôi là Trọng",
-        experience: "20 năm kinh nghiệm",
-        location: "7/20 Đường 385",
-        time: ["07:00 - 07:30", "07:30 - 08:00", "08:00 - 08:30", "09:00 - 09:30", "09:30 - 10:00", "10:00 - 10:30"]
-    };
-    const [availableTimes, setAvailableTimes] = useState(doctorData?.time);
+const { Title, Text } = Typography;
+
+const DoctorDetailPage = () => {
+    const { userId } = useParams();
+    const { data: doctorData, isLoading, isError } = useGetDoctorDetailQuery(userId);
+    const [availableTimes, setAvailableTimes] = useState([]);
     const [selectedDate, setSelectedDate] = useState(dayjs());
-    const navigate = useNavigate()
+    const [bookAppointment] = useBookingApointmentMutation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (doctorData && doctorData.data) {
+            const timesForSelectedDate = doctorData.data.timeSlots?.filter(slot =>
+                dayjs(slot.slotDate).isSame(selectedDate, 'day')
+            ).map(slot => `${slot.startTime} - ${slot.endTime}`) || [];
+            setAvailableTimes(timesForSelectedDate);
+        }
+    }, [doctorData, selectedDate]);
+
     const handleDateChange = (date) => {
         setSelectedDate(date);
     };
 
-    const handleTimeClick = (time) => {
+    const handleTimeClick = async (time) => {
         const formattedDate = selectedDate.format("YYYY-MM-DD");
-        navigate(`/booking?date=${formattedDate}&time=${time}&bsId=${doctorData?.id}`);
+        
+        try {
+            const result = await bookAppointment({
+                userId: doctorData?.data?.id,
+                date: formattedDate,
+                time: time,
+            }).unwrap();
+
+            message.success("Đặt lịch thành công!");
+            navigate(`/booking?date=${formattedDate}&time=${time}&bsId=${doctorData?.data?.id}`);
+        } catch (error) {
+            message.error("Đặt lịch thất bại. Vui lòng thử lại.");
+            console.error("Booking error:", error);
+        }
     };
+
+    if (isLoading) return <p>Đang tải thông tin bác sĩ...</p>;
+    if (isError) return <p>Không tải được thông tin. Vui lòng thử lại sau.</p>;
+
+    const doctor = doctorData?.data;
 
     return (
         <Layout>
             <CustomHeader />
-            <Card className="container mx-auto p-6 mt-24 mb-20 min-h-[100vh] h-fit">
-                {/* Breadcrumb Navigation */}
+            <div className="container mx-auto p-6 mt-24 mb-20 min-h-[100vh] h-fit">
                 <Breadcrumb className="mb-4">
                     <Breadcrumb.Item href="/">
                         <HomeOutlined />
@@ -49,73 +66,73 @@ const DoctorDetail = () => {
                         <UserOutlined />
                         <span>Bác sĩ</span>
                     </Breadcrumb.Item>
-                    <Breadcrumb.Item><span className='text-[#214175] font-bold'>{doctorData?.fullname}</span></Breadcrumb.Item>
+                    <Breadcrumb.Item>
+                        <span className='text-[#214175] font-bold'>{doctor?.fullname || "Tên bác sĩ"}</span>
+                    </Breadcrumb.Item>
                 </Breadcrumb>
 
-                {/* Doctor Profile Card */}
-                <div className='flex flex-col items-center justify-center'>
-                    <Card className="p-6 shadow-lg  w-[60%]">
-                        <Row gutter={16} justify={'space-between'} className='px-9'>
-                            {/* Doctor Image */}
-                            <Col xs={24} md={8}>
+                <Card className="shadow-lg rounded-lg overflow-hidden bg-white p-6 mb-10">
+                    <Row gutter={32} align="top">
+                        {/* Doctor's Image */}
+                        <Col xs={24} md={6} className="flex justify-center md:justify-start">
+                            {doctor?.userImage ? (
                                 <Image
-                                    src={doctorData?.userImage}
+                                    src={doctor.userImage}
                                     alt="Doctor"
-                                    width={300}
-                                    height={300}
-                                    className="rounded-full object-cover shadow-xl"
+                                    width={200}
+                                    height={200}
+                                    className="rounded-full object-cover shadow-lg"
                                 />
-                            </Col>
-                            {/* Doctor Information */}
-                            <Col xs={24} md={12} className="flex flex-col justify-center">
-                                <p className="text-gray-600 mb-1 text-base font-bold">{doctorData.specialization}</p>
-                                <h2 className="text-3xl font-bold mb-5 text-[#4082ec]">{doctorData.fullname}</h2>
-                                <p className="text-black mb-1"><span className='font-bold '>Email: </span>{doctorData.email}</p>
-                                <p className="text-black mb-1"> <span className='font-bold '>Số điện thoại: </span> {doctorData.phonenumber}</p>
-                                <p className="text-black mb-1"><span className='font-bold '>Giới tính:</span> {doctorData.gender}</p>
-                                <p className="text-black mb-1"><span className='font-bold '>Kinh nghiệm: </span>{doctorData.experience}</p>
-                                <p className="text-black mb-1"><span className='font-bold '>Giá thực hiện khám: </span>{doctorData.price}</p>
-                            </Col>
-                        </Row>
-                        <hr className='mt-10'/> 
-                        <Row gutter={24} justify={'space-between'} className='mt-14'>
-                            <Col xs={24} md={12} className="flex flex-col items-center">
-                                <h3 className="text-base font-semibold mb-2">Lịch khám</h3>
-                                <DatePicker
-                                    value={selectedDate}
-                                    onChange={handleDateChange}
-                                    className="w-full mb-4"
-                                    format="DD / MM / YYYY"
-                                />
-                                <h3 className="text-base font-semibold mb-2">Giờ khám</h3>
-                                <div className="grid grid-cols-3 gap-2 mb-6 w-f">
-                                    {availableTimes?.map((time, index) => (
-                                        <Button key={index} type='primary'  className="w-full mx-5" onClick={() => handleTimeClick(time)}>
+                            ) : (
+                                <UserOutlined style={{ fontSize: '200px', color: '#aaa' }} />
+                            )}
+                        </Col>
+
+                        {/* Doctor's Information */}
+                        <Col xs={24} md={10}>
+                            <Title level={2} className="text-[#4082ec]">{doctor?.fullname || "Tên bác sĩ"}</Title>
+                            <Text strong className="text-gray-600">{doctor?.specialization || "Chuyên môn không có sẵn"}</Text>
+                            <p>{doctor?.bio || "Không có thông tin"}</p>
+                            <Divider className="my-2" />
+                            <p><Text strong>Email:</Text> {doctor?.email || "Không có sẵn"}</p>
+                            <p><Text strong>Phone:</Text> {doctor?.phonenumber || "Không có sẵn"}</p>
+                            <p><Text strong>Address:</Text> {doctor?.address || "Không có sẵn"}</p>
+                            <p><Text strong>Gender:</Text> {doctor?.gender || "Không có sẵn"}</p>
+                            <p><Text strong>Date of Birth:</Text> {doctor?.dateOfBirth ? dayjs(doctor.dateOfBirth).format("DD/MM/YYYY") : "Không có sẵn"}</p>
+                            <p><Text strong>Experience:</Text> {doctor?.experience || "Không có sẵn"}</p>
+                            <p><Text strong>Consultation Fee:</Text> {doctor?.consultationFee ? `${doctor.consultationFee} VND` : "Không có sẵn"}</p>
+                        </Col>
+
+                        {/* Appointment Scheduling */}
+                        <Col xs={24} md={8}>
+                            <Title level={4}>Lịch khám</Title>
+                            <DatePicker
+                                value={selectedDate}
+                                onChange={handleDateChange}
+                                className="w-full mb-4"
+                                format="DD / MM / YYYY"
+                            />
+                            <Title level={4}>Giờ khám</Title>
+                            <div className="grid grid-cols-2 gap-2 mb-4">
+                                {availableTimes.length > 0 ? (
+                                    availableTimes.map((time, index) => (
+                                        <Button key={index} type='primary' className="w-full" onClick={() => handleTimeClick(time)}>
                                             {time}
                                         </Button>
-                                    ))}
-                                </div>
-                            </Col>
-                            <Col xs={24} md={12} className="flex flex-col items-center">
-                                <div>
-                                    <h4 className="text-lg font-semibold">Địa chỉ phòng khám</h4>
-                                    <p className="text-sm">{doctorData.location}</p>
-                                </div>
-                            </Col>
-                        </Row>
-                  
-                    </Card>
-                  
-                       
-                </div>
-                <div className="mt-4 p-6 bg-gray-100 rounded-lg shadow-sm">
-                    <h3 className="text-lg font-semibold mb-2">About the Doctor</h3>
-                    <p className="text-gray-700">{doctorData.bio}</p>
-                </div>
-            </Card>
+                                    ))
+                                ) : (
+                                    <Empty description="Không có giờ có sẵn" />
+                                )}
+                            </div>
+                            <Title level={4}>Địa chỉ phòng khám</Title>
+                            <p>{doctor?.location || "Địa chỉ không có sẵn"}</p>
+                        </Col>
+                    </Row>
+                </Card>
+            </div>
             <CustomFooter />
         </Layout>
     );
 };
 
-export default DoctorDetail;
+export default DoctorDetailPage;

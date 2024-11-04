@@ -24,6 +24,9 @@ const Admin = Loadable({
 const AdminUser = Loadable({
   loader: () => import("../pages/admin/AdminUser"),
 });
+const AdminDoctor = Loadable({
+  loader: () => import("../pages/admin/AdminDoctor"),
+});
 const PaymentConfirmation = Loadable({
   loader: () => import("../components/PaymentConfirmation"),
 });
@@ -56,7 +59,7 @@ export const router = createBrowserRouter([
     element: DoctorPage,
   },
   {
-    path: "/doctor/:dtId",
+    path: "/doctor/:userId",
     element: DoctorDetailPage,
   },
   {
@@ -74,6 +77,11 @@ export const router = createBrowserRouter([
           {
             path: "users",
             element: AdminUser,
+            
+          },
+          {
+            path: "doctors",
+            element: AdminDoctor,
             
           },
         ],
