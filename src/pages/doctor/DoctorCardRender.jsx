@@ -9,6 +9,7 @@ const DoctorCardRender = ({ doctor }) => {
   const [availableTimes, setAvailableTimes] = useState([]);
   const navigate = useNavigate();
 
+
   useEffect(() => {
     if (doctor.timeSlots && selectedDate) {
       // Filter available times for the selected date
@@ -28,7 +29,7 @@ const DoctorCardRender = ({ doctor }) => {
 
   const handleTimeClick = (time, timeSlotId) => {
     const formattedDate = selectedDate.format("YYYY/MM/DD");
-    navigate(`/booking?date=${formattedDate}&time=${time}&bsId=${doctor.id}&timeSlotId=${timeSlotId}`);
+    navigate(`/booking?date=${formattedDate}&time=${time}&bsId=${doctor.userId}&timeSlotId=${timeSlotId}`);
   };
 
   return (
@@ -45,7 +46,7 @@ const DoctorCardRender = ({ doctor }) => {
               className="rounded-full mr-4 shadow-2xl"
             />
             <div className="ml-8 mt-2 flex flex-col gap-1">
-              <Link to={`/doctor/${doctor.userId}`}>
+              <Link to={`/doctor/${doctor.id}`}>
                 <h2 className="text-2xl font-bold text-[#379da8] hover:text-[#576eee] hover:drop-shadow-xl hover:shadow-cyan-500">
                   {doctor.fullname}
                 </h2>

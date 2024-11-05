@@ -19,6 +19,7 @@ const BookingPage = () => {
   const bsId = searchParams.get("bsId");
 
   const { data: doctorData, isLoading } = useGetDoctorDetailQuery(bsId);
+  console.log(doctorData)
   const [bookingApoinment] = useBookingApointmentMutation();
   const [payAppointment] = useBookingAppointmentPayMutation();
   const [isPaymentModalOpen, setPaymentModalOpen] = useState(false);
@@ -86,14 +87,14 @@ const BookingPage = () => {
             <Image
               width={170}
               height={170}
-              src={doctorData?.userImage || 'https://via.placeholder.com/150'}
+              src={doctorData?.data.userImage || 'https://via.placeholder.com/150'}
               alt="Bác sĩ"
               className="rounded-full shadow-lg mr-6"
             />
             <div className="flex-1 gap-1 ml-12">
-              <p className="text-lg mb-1">{doctorData?.specialization}</p>
+              <p className="text-lg mb-1">{doctorData?.data.specialization}</p>
               <Link to={`/doctor${doctorData?.id}`}>
-                <h2 className="text-2xl font-bold text-blue-500">{doctorData?.fullname}</h2>
+                <h2 className="text-2xl font-bold text-blue-500">{doctorData?.data.fullname}</h2>
               </Link>
               <div className="mt-2 text-[17px] flex flex-col gap-2">
                 <p className='flex items-center'>
@@ -106,7 +107,7 @@ const BookingPage = () => {
                 </p>
                 <p className='flex items-center'>
                   <Image preview={false} src={locationIcon} width={20} />
-                  <span className='text-[#000] ml-2'>Địa Chỉ Phòng Khám: {doctorData?.location}</span>
+                  <span className='text-[#000] ml-2'>Địa Chỉ Phòng Khám: {doctorData?.data.location}</span>
                 </p>
               </div>
             </div>
