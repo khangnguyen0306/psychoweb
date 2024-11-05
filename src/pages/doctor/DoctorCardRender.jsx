@@ -50,6 +50,10 @@ const DoctorCardRender = ({ doctor }) => {
                   {doctor.fullname}
                 </h2>
               </Link>
+              <p className="text-xl font-bold py-2">
+                Giá Khám: <span className='text-red-400'> {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(doctor.consultationFee)}</span>
+              </p>
+
               <p className="text-sm">{doctor.specialization}</p>
               <p className="text-gray-500">{doctor.bio}</p>
             </div>
