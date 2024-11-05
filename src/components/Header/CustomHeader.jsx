@@ -4,7 +4,7 @@ import { Button, Layout, Menu, Drawer, Grid, Image, Dropdown, notification } fro
 import "./CustomHeader.scss";
 import { DoubleRightOutlined, FacebookOutlined, FormOutlined, InstagramOutlined, LoginOutlined, LogoutOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
 import NameWeb from "../../../src/assets/image/logo.svg"
-import { logOut, selectCurrentToken } from "../../slices/auth.slice";
+import { logOut, selectCurrentToken, selectCurrentUser } from "../../slices/auth.slice";
 import { useDispatch, useSelector } from "react-redux";
 
 const { Header } = Layout;
@@ -21,7 +21,7 @@ const CustomHeader = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-
+    const userData = useSelector(selectCurrentUser)
     useEffect(() => {
         const handleScroll = () => {
             const currentScrollPos = window.pageYOffset;
@@ -67,8 +67,8 @@ const CustomHeader = () => {
         {
             key: '1',
             label: (
-                <Link to='/profile' style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <p style={{ paddingRight: '20px' }}>Hồ sơ</p> <LoginOutlined />
+                <Link to='/profile' style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                    <p style={{ paddingRight: '20px' }}>Hồ sơ</p> <UserOutlined />
                 </Link>
             ),
         },
@@ -91,16 +91,25 @@ const CustomHeader = () => {
                     </div>
                 </Link>
                 {screens.md ? (
-                    <Menu mode="horizontal"  selectedKeys={[location.pathname]} style={{ width: 'fit-content', backgroundColor: 'none', marginLeft: '2.2rem' }}>
+                    <Menu mode="horizontal" selectedKeys={[location.pathname]} style={{ width: 'fit-content', backgroundColor: 'none', marginLeft: '2.2rem' }}>
                         <Menu.Item key="/">
                             <NavLink exact to="/" activeClassName="active">Trang chủ</NavLink>
                         </Menu.Item>
-                        <Menu.Item key="/doctor" >
-                            <NavLink to="/doctor" activeClassName="active">Bác sĩ</NavLink>
-                        </Menu.Item>
-                        <Menu.Item key="2" >
-                            <NavLink to="/about">Giới thiệu</NavLink>
-                        </Menu.Item>
+                        {userData?.role != "PSYCHIATRIST" && (
+                            <Menu.Item key="/doctor" >
+
+                                <NavLink to="/doctor" activeClassName="active">Bác sĩ</NavLink>
+                            </Menu.Item>
+                        )}
+                        {userData?.role != "PSYCHIATRIST" ? (
+                            <Menu.Item key="2" >
+                                <NavLink to="/about">Giới thiệu</NavLink>
+                            </Menu.Item>
+                        ) : (
+                            <Menu.Item key="2" >
+                                <NavLink to="/manageBooking">Quản lý lịch hẹn</NavLink>
+                            </Menu.Item>
+                        )}
                         <Menu.Item key="3" onClick={() => { setActiveTab("3"); setDrawerVisible(false); }}>
                             <Link to="/">Cộng đồng</Link>
                         </Menu.Item>
