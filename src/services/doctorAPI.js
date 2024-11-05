@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { navigate } from "../utils/navigate";
 import { selectTokens } from "../slices/auth.slice";
 import { BE_API_LOCAL } from "../config";
 
@@ -19,18 +18,11 @@ export const doctorAPI = createApi({
   }),
   endpoints: (builder) => ({
     getAllDoctor: builder.query({
-      query: () => `getlist`,
+      query: () => `/getlist`,
       providesTags: (result) =>
         result
-          ? result?.data.map(({ id }) => ({ type: "DoctorList", id }))
+          ? result.data.map(({ id }) => ({ type: "DoctorList", id }))
           : [{ type: "DoctorList", id: "LIST" }],
-    }),
-
-    getUserProfile: builder.query({
-      query: (userId) => ({
-        url: `user/${userId}`,
-        method: "GET",
-      }),
     }),
 
     getDoctorDetail: builder.query({
@@ -38,26 +30,60 @@ export const doctorAPI = createApi({
         url: `/${userId}`,
         method: "GET",
       }),
+      providesTags: (result, error, userId) => [{ type: "DoctorList", id: userId }],
+    }),
+
+    createDoctor: builder.mutation({
+      query: (newDoctorData) => ({
+        url: `/create`,
+        method: "POST",
+        body: newDoctorData,
+      }),
+      invalidatesTags: [{ type: "DoctorList", id: "LIST" }],
+    }),
+
+    editDoctor: builder.mutation({
+      query: ({ userId, ...updatedDoctorData }) => ({
+        url: `/update/${userId}`, // Sử dụng userId để phù hợp với tài liệu API
+        method: "PUT",
+        body: updatedDoctorData,
+      }),
+      invalidatesTags: (result, error, { userId }) => [{ type: "DoctorList", id: userId }],
+    }),
+    
+    
+    deleteDoctor: builder.mutation({
+      query: (userId) => ({
+        url: `/delete/${userId}`, // Use userId instead of doctorId
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, userId) => [{ type: "DoctorList", id: userId }],
     }),
 
     BookingApointment: builder.mutation({
-      query: (body) => {
-        return {
-          method: "POST",
-          url: `appointment/create`,
-          body: body,
-        };
-      },
+      query: (body) => ({
+        method: "POST",
+        url: `appointment/create`,
+        body: body,
+      }),
       invalidatesTags: [{ type: "ApoinmentList", id: "LIST" }],
     }),
 
-    // Endpoint mới cho thanh toán cuộc hẹn
     BookingAppointmentPay: builder.mutation({
       query: (paymentData) => ({
         method: "POST",
         url: `appointment/pay`,
         body: paymentData,
       }),
+    }),
+
+    // New endpoint to fetch appointments by user ID
+    getAppointmentsByUserId: builder.query({
+      query: (userId) => ({
+        url: `appointment/getallbyuserid/${userId}`,
+        method: "GET",
+      }),
+      providesTags: [{ type: "ApoinmentList", id: "LIST" }],
     }),
   }),
 });
@@ -66,5 +92,9 @@ export const {
   useGetAllDoctorQuery,
   useGetDoctorDetailQuery,
   useBookingApointmentMutation,
-  useBookingAppointmentPayMutation, // Hook mới cho thanh toán
+  useBookingAppointmentPayMutation,
+  useGetAppointmentsByUserIdQuery, // New hook for fetching appointment history
+  useCreateDoctorMutation,
+  useEditDoctorMutation,
+  useDeleteDoctorMutation,
 } = doctorAPI;

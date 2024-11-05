@@ -1,6 +1,6 @@
 // AdminSidebar.js
 import React from 'react';
-import { DashboardOutlined, UserOutlined, FileTextOutlined, SettingOutlined, BarChartOutlined, LogoutOutlined } from '@ant-design/icons';
+import { DashboardOutlined, UserOutlined, FileTextOutlined, SettingOutlined, BarChartOutlined, LogoutOutlined, MedicineBoxOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logOut } from "../../slices/auth.slice";
@@ -25,6 +25,10 @@ const AdminSidebar = () => {
         <Link to="/admin/users" className="flex items-center space-x-2 text-white hover:bg-gray-700 p-2 rounded-md">
           <UserOutlined />
           <span>Quản lý người dùng</span>
+        </Link>
+        <Link to="/admin/doctors" className="flex items-center space-x-2 text-white hover:bg-gray-700 p-2 rounded-md">
+          <MedicineBoxOutlined />
+          <span>Quản lý bác sĩ</span> {/* New Doctor Management link */}
         </Link>
         <Link to="/admin/reports" className="flex items-center space-x-2 text-white hover:bg-gray-700 p-2 rounded-md">
           <FileTextOutlined />
