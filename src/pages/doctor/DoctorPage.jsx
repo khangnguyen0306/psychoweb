@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, DatePicker, Layout, Select } from 'antd';
+import { Card, DatePicker, Layout, Select, Skeleton } from 'antd';
 import dayjs from 'dayjs';
 import { useGetAllDoctorQuery } from '../../services/doctorAPI';
 import 'tailwindcss/tailwind.css';
@@ -14,7 +14,7 @@ const DoctorPage = () => {
   console.log(doctorData)
 
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <div className='flex justify-center items-center'><Skeleton/></div>;
   // if (error) return <p>Error loading doctors</p>;
 
   return (

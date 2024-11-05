@@ -33,6 +33,9 @@ const PaymentConfirmation = Loadable({
 const About = Loadable({
   loader: () => import("../pages/About/About"),
 });
+const ManageBooking = Loadable({
+  loader: () => import("../pages/doctor/ManageBooking"),
+});
 // const ManageProducts = Loadable({
 //   loader: () => import("../pages/manage/ManageProducts"),
 // });
@@ -77,12 +80,12 @@ export const router = createBrowserRouter([
           {
             path: "users",
             element: AdminUser,
-            
+
           },
           {
             path: "doctors",
             element: AdminDoctor,
-            
+
           },
         ],
       },
@@ -112,9 +115,13 @@ export const router = createBrowserRouter([
             path: "/booking",
             element: BookingPage,
           },
+          {
+            path: "/manageBooking",
+            element: ManageBooking,
+          },
         ],
       },
-     
+
       {
         path: "manage-products",
         element: <AuthGuard />,
@@ -135,6 +142,6 @@ export const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <MaintenancePage/>,
+    element: <MaintenancePage />,
   },
 ]);

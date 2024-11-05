@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Breadcrumb, Card, Image, Layout, Row, Col, DatePicker, Button, Typography, Divider, message, Empty } from 'antd';
+import { Breadcrumb, Card, Image, Layout, Row, Col, DatePicker, Button, Typography, Divider, message, Empty, Skeleton } from 'antd';
 import { HomeOutlined, UserOutlined } from '@ant-design/icons';
 import CustomHeader from '../../components/Header/CustomHeader';
 import CustomFooter from '../../components/Footer/CustomFooter';
@@ -19,10 +19,13 @@ const DoctorDetailPage = () => {
 
     useEffect(() => {
         if (doctorData && doctorData.data) {
-            const timesForSelectedDate = doctorData.data.timeSlots?.filter(slot =>
-                dayjs(slot.slotDate).isSame(selectedDate, 'day')
-            ).map(slot => `${slot.startTime} - ${slot.endTime}`) || [];
-            setAvailableTimes(timesForSelectedDate);
+            const filteredTimes = doctorData.data.timeSlots
+                .filter(slot => dayjs(slot.slotDate).isSame(selectedDate, 'day'))
+                .map(slot => ({
+                    time: `${dayjs(slot.startTime, 'HH:mm').format('HH:mm')} - ${dayjs(slot.endTime, 'HH:mm').format('HH:mm')}`,
+                    timeSlotId: slot.timeSlotId,
+                }));
+            setAvailableTimes(filteredTimes);
         }
     }, [doctorData, selectedDate]);
 
@@ -30,28 +33,16 @@ const DoctorDetailPage = () => {
         setSelectedDate(date);
     };
 
-    const handleTimeClick = async (time) => {
-        const formattedDate = selectedDate.format("YYYY-MM-DD");
-        
-        try {
-            const result = await bookAppointment({
-                userId: doctorData?.data?.id,
-                date: formattedDate,
-                time: time,
-            }).unwrap();
-
-            message.success("Đặt lịch thành công!");
-            navigate(`/booking?date=${formattedDate}&time=${time}&bsId=${doctorData?.data?.id}`);
-        } catch (error) {
-            message.error("Đặt lịch thất bại. Vui lòng thử lại.");
-            console.error("Booking error:", error);
-        }
+    const handleTimeClick = (time, timeSlotId) => {
+        const formattedDate = selectedDate.format("YYYY/MM/DD");
+        navigate(`/booking?date=${formattedDate}&time=${time}&bsId=${doctor.id}&timeSlotId=${timeSlotId}`);
     };
 
-    if (isLoading) return <p>Đang tải thông tin bác sĩ...</p>;
-    if (isError) return <p>Không tải được thông tin. Vui lòng thử lại sau.</p>;
+    if (isLoading) return <div className='flex justify-center items-center'><Skeleton/></div>;
+    if (isError) return <div className='flex justify-center items-center'><Skeleton/></div>;
 
     const doctor = doctorData?.data;
+
 
     return (
         <Layout>
@@ -115,9 +106,9 @@ const DoctorDetailPage = () => {
                             <Title level={4}>Giờ khám</Title>
                             <div className="grid grid-cols-2 gap-2 mb-4">
                                 {availableTimes.length > 0 ? (
-                                    availableTimes.map((time, index) => (
-                                        <Button key={index} type='primary' className="w-full" onClick={() => handleTimeClick(time)}>
-                                            {time}
+                                    availableTimes.map((slot, index) => (
+                                        <Button key={index} type='primary' className="w-full" onClick={() => handleTimeClick(slot.time, slot.timeSlotId)}>
+                                            {slot.time}
                                         </Button>
                                     ))
                                 ) : (

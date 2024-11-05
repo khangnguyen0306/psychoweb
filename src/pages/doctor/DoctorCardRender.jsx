@@ -45,7 +45,7 @@ const DoctorCardRender = ({ doctor }) => {
               className="rounded-full mr-4 shadow-2xl"
             />
             <div className="ml-8 mt-2 flex flex-col gap-1">
-              <Link to={`/doctor/${doctor.id}`}>
+              <Link to={`/doctor/${doctor.userId}`}>
                 <h2 className="text-2xl font-bold text-[#379da8] hover:text-[#576eee] hover:drop-shadow-xl hover:shadow-cyan-500">
                   {doctor.fullname}
                 </h2>
