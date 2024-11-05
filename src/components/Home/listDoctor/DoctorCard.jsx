@@ -7,7 +7,9 @@ const DoctorCard = ({ doctor }) => {
   return (
     <Card className="p-4 shadow-lg hover:shadow-cyan-200">
       <Image
-        src={"https://t3.ftcdn.net/jpg/02/60/04/08/360_F_260040863_fYxB1SnrzgJ9AOkcT0hoe7IEFtsPiHAD.jpg"} //////////chua co anh
+        width={300}
+        height={300}
+        src={doctor.userImage} //////////chua co anh
         alt={doctor.fullname}
         className="w-[200px] h-12 mx-auto"
       />
@@ -19,7 +21,7 @@ const DoctorCard = ({ doctor }) => {
       </div>
       <div className="flex justify-between items-center mt-4">
         <div className="flex space-x-4 mt-2">
-          <Button 
+          <Button
             icon={<FacebookOutlined />}
             className="bg-blue-600 text-white"
           />
