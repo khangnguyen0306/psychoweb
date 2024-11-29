@@ -110,12 +110,7 @@ const CustomHeader = () => {
                                 <NavLink to="/manageBooking">Quản lý lịch hẹn</NavLink>
                             </Menu.Item>
                         )}
-                        <Menu.Item key="3" onClick={() => { setActiveTab("3"); setDrawerVisible(false); }}>
-                            <Link to="/">Cộng đồng</Link>
-                        </Menu.Item>
-                        <Menu.Item key="5" onClick={() => { setActiveTab("5"); setDrawerVisible(false); }}>
-                            <Link to="admin">Giá cả</Link>
-                        </Menu.Item>
+                        
                     </Menu>
                 ) : (
                     <Button className="menu-btn" onClick={() => setDrawerVisible(true)} style={{ marginRight: '40px' }} aria-label="Mở menu">

@@ -59,7 +59,7 @@ export const userAPI = createApi({
 
         // Edit a user's profile
         editProfile: builder.mutation({
-            query: ({ userId, ...body }) => ({
+            query: ({ userId, body }) => ({
                 url: `user/update/${userId}`,
                 method: "PUT",
                 body,

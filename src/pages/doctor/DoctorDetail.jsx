@@ -35,7 +35,7 @@ const DoctorDetailPage = () => {
 
     const handleTimeClick = (time, timeSlotId) => {
         const formattedDate = selectedDate.format("YYYY/MM/DD");
-        navigate(`/booking?date=${formattedDate}&time=${time}&bsId=${doctor.id}&timeSlotId=${timeSlotId}`);
+        navigate(`/booking?date=${formattedDate}&time=${time}&bsId=${doctor.id}&timeSlotId=${timeSlotId}&bsIsUser=${doctor.userId}`);
     };
 
     if (isLoading) return <div className='flex justify-center items-center'><Skeleton/></div>;

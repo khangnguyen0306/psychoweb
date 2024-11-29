@@ -17,8 +17,9 @@ const BookingPage = () => {
   const time = searchParams.get("time");
   const timeId = searchParams.get("timeSlotId");
   const bsId = searchParams.get("bsId");
+  const bsIsUser = searchParams.get("bsIsUser");
 
-  const { data: doctorData, isLoading } = useGetDoctorDetailQuery(bsId);
+  const { data: doctorData, isLoading } = useGetDoctorDetailQuery(bsIsUser);
   console.log(doctorData)
   const [bookingApoinment] = useBookingApointmentMutation();
   const [payAppointment] = useBookingAppointmentPayMutation();
@@ -31,48 +32,54 @@ const BookingPage = () => {
   const onFinish = async (values) => {
     values.appointmentDate = dayjs(date);
     values.userId = user?.id;
+    values.userId = user?.id;
     values.psychiatristId = parseInt(bsId);
     values.timeSlotId = parseInt(timeId);
     values.bookingDate = dayjs();
-  
+
     try {
       const bookingResponse = await bookingApoinment(values).unwrap();
       const appointmentId = bookingResponse?.data?.id;
       const consultationFee = bookingResponse?.data?.consultationFee || 50000;
-  
+
       setPaymentInfo({
         amount: consultationFee,
         orderDescription: values.reason,
         appointmentId: String(appointmentId)
       });
-  
+
       setPaymentModalOpen(true); // Show payment modal
     } catch (error) {
-      message.error("Booking failed. Please try again.");
+      console.error(error);
+      if (error.status == 404) {
+        message.error(error.data.message);
+      } else {
+        message.error("Booking failed. Please try again.");
+      }
     }
   };
   const handlePayment = async () => {
     try {
-        const paymentData = {
-            orderType: "Appointment",
-            amount: paymentInfo.amount,
-            orderDescription: paymentInfo.orderDescription,
-            appointmentId: String(paymentInfo.appointmentId),
-        };
+      const paymentData = {
+        orderType: "Appointment",
+        amount: paymentInfo.amount,
+        orderDescription: paymentInfo.orderDescription,
+        appointmentId: String(paymentInfo.appointmentId),
+      };
 
-        const response = await payAppointment(paymentData).unwrap();
-        
-        // Access the URL from the JSON response and redirect
-        if (response?.paymentUrl) {
-            setPaymentUrl(response.paymentUrl); // Store URL for manual link
-            window.location.href = response.paymentUrl; // Automatically redirect
-        } else {
-            message.error("Could not retrieve payment URL from the response.");
-        }
+      const response = await payAppointment(paymentData).unwrap();
+
+      // Access the URL from the JSON response and redirect
+      if (response?.paymentUrl) {
+        setPaymentUrl(response.paymentUrl); // Store URL for manual link
+        window.location.href = response.paymentUrl; // Automatically redirect
+      } else {
+        message.error("Could not retrieve payment URL from the response.");
+      }
     } catch (error) {
-        message.error("Payment failed. Please try again.");
+      message.error("Payment failed. Please try again.");
     }
-};
+  };
 
 
 
@@ -116,7 +123,7 @@ const BookingPage = () => {
 
         {/* Booking Form */}
         <div className='flex justify-center w-[80%]'>
-          <ConfigProvider theme={{ components: { Card: { headerBg: "#d4effc" }}}}>
+          <ConfigProvider theme={{ components: { Card: { headerBg: "#d4effc" } } }}>
             <Card title={<span className='text-xl font-bold text-center w-full'>Thông Tin Đặt Lịch Khám</span>} className="shadow-lg p-4 text-center w-[70%]">
               <Form form={form} layout="vertical" onFinish={onFinish}>
                 <Form.Item label="Mô tả sơ lược tình trạng / lý do khám" name="reason" rules={[{ required: true, message: 'Vui lòng mô tả tình trạng hoặc lý do khám' }]}>
@@ -159,15 +166,18 @@ const BookingPage = () => {
       {/* Payment Modal */}
       <Modal
         title="Thanh Toán"
-        visible={isPaymentModalOpen}
+        open={isPaymentModalOpen}
         onCancel={() => setPaymentModalOpen(false)}
         onOk={handlePayment}
         okText="Thanh toán"
         cancelText="Hủy"
+        maskClosable={false}
       >
-        <p><b>Số tiền:</b> {paymentInfo.amount.toLocaleString()} VND</p>
-        <p><b>Mô tả đơn hàng:</b> {paymentInfo.orderDescription}</p>
-        <p><b>ID Cuộc hẹn:</b> {paymentInfo.appointmentId}</p>
+        <div className='flex flex-col gap-1'>
+          <p><b>Mã Cuộc hẹn:</b> {paymentInfo.appointmentId}</p>
+          <p ><b>Số tiền:</b> <span className='font-bold text-green-600'>{paymentInfo.amount.toLocaleString()}  VND</span> </p>
+          <p><b>Mô tả lý do khám :</b> {paymentInfo.orderDescription}</p>
+        </div>
         {paymentUrl && (
           <p>
             <a href={paymentUrl} target="_blank" rel="noopener noreferrer">

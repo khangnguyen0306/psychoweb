@@ -9,7 +9,7 @@ const DoctorCard = ({ doctor }) => {
       <Image
         width={300}
         height={300}
-        src={doctor.userImage} //////////chua co anh
+        src={doctor.userImage} 
         alt={doctor.fullname}
         className="w-[200px] h-12 mx-auto"
       />

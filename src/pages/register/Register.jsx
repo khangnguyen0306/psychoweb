@@ -38,17 +38,23 @@ const Register = () => {
 
   return (
     <Layout className='register-layout'>
-
-      <Row className='row-layout' justify={'space-between'}>
-        <Col >
+      <Row className='row-layout' justify={'space-between'} >
+        <Col span={12}>
           <div className='content-layout-register '>
             <div className='form-register'>
               <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                 <h2 className="title-login">Đăng ký</h2>
               </div>
-              <Form form={form} onFinish={handleSubmit}>
-                {/* <Form form={form}> */}
+              <Form
+                labelCol={{ span: 9 }}
+                wrapperCol={{ span: 24 }}
+                labelAlign='left'
+                form={form}
+                onFinish={handleSubmit}
+              >
+
                 <Form.Item
+
                   hasFeedback
                   label="Email"
                   name="email"
@@ -84,8 +90,7 @@ const Register = () => {
                   rules={[
                     {
                       required: true,
-                      //     pattern: validationPatterns.name.pattern,
-                      //     message: validationPatterns.name.message,
+                      message: 'Vui lòng nhập vào địa chỉ !'
                     },
 
                   ]}
@@ -123,7 +128,7 @@ const Register = () => {
                   label="Ngày sinh"
                   name="dateOfBirth"
                   rules={[
-                    // { required: true, message: "Vui lòng chọn ngày sinh của bạn!" },
+                    { required: true, message: "Vui lòng chọn ngày sinh của bạn!" },
                     ({ getFieldValue }) => ({
                       validator(_, value) {
                         if (!value) {
@@ -235,10 +240,11 @@ const Register = () => {
 
           </div>
         </Col>
-        <Col>
+        <Col span={12}>
           <div className='image-register'>
             <Image preview={false} src={imager} />
-          </div></Col>
+          </div>
+        </Col>
       </Row>
 
     </Layout>
