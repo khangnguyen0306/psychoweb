@@ -35,7 +35,7 @@ const Dashboard = () => {
             <DollarOutlined className="text-green-600 text-3xl" />
             <div>
               <h2 className="text-xl font-semibold text-gray-700">Tổng doanh thu</h2>
-              <p className="text-gray-500">${totalRevenue?.toLocaleString() || 0}</p>
+              <p className="text-gray-500 font-bold">{totalRevenue?.toLocaleString() || 0} VND</p>
             </div>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4">
