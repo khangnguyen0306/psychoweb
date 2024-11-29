@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Input, Button } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
+import { validationPatterns } from '../../utils/utils';
 
 const Privacy = () => {
     const [showForm, setShowForm] = useState(false);
@@ -32,14 +33,31 @@ const Privacy = () => {
                     <Form.Item
                         name="newPassword"
                         label="New Password"
-                        rules={[{ required: true, message: 'Please input your new password!' }]}
+                        rules={[
+                            {
+                              required: true,
+                              pattern: validationPatterns.password.pattern,
+                              message: validationPatterns.password.message
+        
+                            }
+                          ]}
                     >
                         <Input.Password prefix={<LockOutlined />} placeholder="New Password" />
                     </Form.Item>
                     <Form.Item
                         name="confirmPassword"
                         label="Confirm New Password"
-                        rules={[{ required: true, message: 'Please confirm your new password!' }]}
+                        rules={[
+                            { required: true, message: 'Vui lòng nhập lại mật khẩu!' },
+                            ({ getFieldValue }) => ({
+                              validator(_, value) {
+                                if (!value || getFieldValue('newPassword') === value) {
+                                  return Promise.resolve();
+                                }
+                                return Promise.reject(new Error('Mật khẩu không khớp!'));
+                              },
+                            }),
+                          ]}
                     >
                         <Input.Password prefix={<LockOutlined />} placeholder="Confirm New Password" />
                     </Form.Item>

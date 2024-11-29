@@ -11,6 +11,7 @@ import LoginForm from "../../components/login/FormLogin.jsx";
 import { selectCurrentToken } from "../../slices/auth.slice.js";
 import { useResetPasswordMutation, useVerifyOtpMutation } from "../../services/authAPI.js";
 import { useForm } from "antd/es/form/Form.js";
+import { validationPatterns } from "../../utils/utils.js";
 
 function Login() {
   const token = useSelector(selectCurrentToken);
@@ -58,6 +59,9 @@ function Login() {
       setFogotPassword();
       form.resetFields();
     } catch (error) {
+      if (error.status == 400) {
+        message.error("OTP không đúng hoặc đã hết hạn !");
+      }
       console.error("Đặt lại mật khẩu không thành công:", error);
     } finally {
       setIsLoadingResetPassword(false);
@@ -74,96 +78,106 @@ function Login() {
         <>
           <Layout className="Layout-login">
             <div className="login-page">
-              <Space>
-                <Row>
-                  <Col style={{ padding: '6rem 14rem' }}>
-                    {isFogotPasswords ? (
-                      <>
-                        <div className="p-[43px]">
-                          <Button className="absolute left-7 top-16" icon={<BackwardOutlined />} onClick={setFogotPassword}>Quay lại đăng nhập</Button>
-                          <h1 className="title-login">Quên mật khẩu</h1>
-                          <div className="form-login">
-
-                            {!isSendOTP ? (
-                              <Form onFinish={handleSendOtp}>
-                                <Form.Item
-                                  name="email"
-                                  rules={[
-                                    {
-                                      type: 'email',
-                                      message: 'Địa chỉ email không hợp lệ!',
-                                    },
-                                  ]}
-                                >
-                                  <Input placeholder="Email" />
-                                </Form.Item>
-
-                                <Button type="primary" htmlType="submit" loading={isLoadingSendOTP}>
-                                  Gửi liên kết đặt lại
-                                </Button>
-                              </Form>
-                            ) : (
-
-                              <Form onFinish={handleResetPass}>
-                                <Form.Item
-                                  name="otp"
-                                  rules={[{ required: true, message: 'Vui lòng nhập OTP!' }]}
-                                >
-                                  <Input placeholder="Nhập OTP" />
-                                </Form.Item>
-                                <Form.Item
-                                  name="newPassword"
-                                  rules={[{ required: true, message: 'Vui lòng nhập mật khẩu mới!' }]}
-                                >
-                                  <Input.Password placeholder="Mật khẩu mới" />
-                                </Form.Item>
-                                <Form.Item
-                                  name="confirmPassword"
-                                  dependencies={['newPassword']}
-                                  hasFeedback
-                                  rules={[
-                                    { required: true, message: 'Vui lòng xác nhận mật khẩu!' },
-                                    ({ getFieldValue }) => ({
-                                      validator(_, value) {
-                                        if (!value || getFieldValue('newPassword') === value) {
-                                          return Promise.resolve();
-                                        }
-                                        return Promise.reject(new Error('Hai mật khẩu không khớp!'));
-                                      },
-                                    }),
-                                  ]}
-                                >
-                                  <Input.Password placeholder="Xác nhận mật khẩu" />
-                                </Form.Item>
-
-                                <Button type="primary" htmlType="submit" loading={isLoadingResetPassword}>
-                                  Xác minh OTP và đặt lại mật khẩu
-                                </Button>
-                              </Form>
-                            )}
-
-                          </div>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <h1 className="title-login">Đăng nhập</h1>
+              <Row>
+                <Col span={12} style={{ padding: '6rem 12rem' }}>
+                  {isFogotPasswords ? (
+                    <>
+                      <div className="p-[43px] w-full">
+                        <Button className="absolute left-7 top-16" icon={<BackwardOutlined />} onClick={setFogotPassword}>Quay lại</Button>
+                        <h1 className="title-login">Quên mật khẩu</h1>
                         <div className="form-login">
-                          <LoginForm handleFogot={setFogotPassword} />
-                          <Divider plain style={{ padding: '15px' }}><span>Hoặc</span></Divider>
 
-                          <div style={{ textAlign: 'center' }}>
-                            <p>Bạn chưa có tài khoản? <Link style={{ fontSize: '16px', padding: '10px' }} to={"/register"}> Đăng ký</Link></p>
-                          </div>
+                          {!isSendOTP ? (
+                            <Form onFinish={handleSendOtp} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                              <Form.Item
+                                style={{ padding: '10px 0px' }}
+                                name="email"
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: 'Nhập vào Email !'
+                                  },
+                                  {
+                                    type: 'email',
+                                    message: 'Địa chỉ email không hợp lệ!',
+                                  },
+                                ]}
+                              >
+                                <Input placeholder="Email" />
+                              </Form.Item>
+
+                              <Button type="primary" htmlType="submit" loading={isLoadingSendOTP}>
+                                Gửi mã OTP
+                              </Button>
+                            </Form>
+                          ) : (
+
+                            <Form onFinish={handleResetPass} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                              <Form.Item
+                                name="otp"
+                                rules={[{ required: true, message: 'Vui lòng nhập OTP!' }]}
+                              >
+                                <Input placeholder="Nhập OTP" />
+                              </Form.Item>
+                              <Form.Item
+                                name="newPassword"
+                                rules={[
+                                  {
+                                    required: true,
+                                    pattern: validationPatterns.password.pattern,
+                                    message: validationPatterns.password.message
+
+                                  }
+                                ]}
+                              >
+                                <Input.Password placeholder="Mật khẩu mới" />
+                              </Form.Item>
+                              <Form.Item
+                                name="confirmPassword"
+                                dependencies={['newPassword']}
+                                hasFeedback
+                                rules={[
+                                  { required: true, message: 'Vui lòng xác nhận mật khẩu!' },
+                                  ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                      if (!value || getFieldValue('newPassword') === value) {
+                                        return Promise.resolve();
+                                      }
+                                      return Promise.reject(new Error('Hai mật khẩu không khớp!'));
+                                    },
+                                  }),
+                                ]}
+                              >
+                                <Input.Password placeholder="Xác nhận mật khẩu" />
+                              </Form.Item>
+
+                              <Button type="primary" htmlType="submit" loading={isLoadingResetPassword}>
+                                Xác minh OTP và đặt lại mật khẩu
+                              </Button>
+                            </Form>
+                          )}
+
                         </div>
-                      </>
-                    )}
-                  </Col>
-                  <Col className="image-login">
-                    <Image preview={false} src={imager} style={{ height: '100vh' }} />
-                  </Col>
-                </Row>
-              </Space>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <h1 className="title-login">Đăng nhập</h1>
+                      <div className="form-login">
+                        <LoginForm handleFogot={setFogotPassword} />
+                        <Divider plain style={{ padding: '15px' }}><span>Hoặc</span></Divider>
+
+                        <div style={{ textAlign: 'center' }}>
+                          <p>Bạn chưa có tài khoản? <Link style={{ fontSize: '16px', padding: '10px' }} to={"/register"}> Đăng ký</Link></p>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </Col>
+                <Col span={12} className="image-login">
+                  <Image preview={false} src={imager} style={{ height: '100vh' }} />
+                </Col>
+              </Row>
             </div>
           </Layout>
         </>
