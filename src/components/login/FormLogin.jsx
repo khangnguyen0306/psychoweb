@@ -18,6 +18,7 @@ const LoginForm = ({ handleFogot }) => {
   const [loginUser, { isLoading }] = useLoginUserMutation();
 
   const handleLoginSuccess = (data) => {
+
     const user = data.data.user;
     const token = data.data.token;
 
@@ -29,7 +30,7 @@ const LoginForm = ({ handleFogot }) => {
       duration: 2,
       description: (
         <div>
-          Chào mừng {user.userName} <SmileOutlined />
+          Chào mừng {user.fullname} <SmileOutlined />
         </div>
       ),
     });
@@ -55,7 +56,12 @@ const LoginForm = ({ handleFogot }) => {
   const handleSubmit = async (values) => {
     try {
       const result = await loginUser({ email: values.email, password: values.password });
-      console.log(result);
+
+      if(result.data.data.user.role === "ADMIN"){
+        setTimeout(() => {
+          navigate('/admin');
+        }, 100)
+      }
       if (result.data) {
         handleLoginSuccess(result.data);
       } else {
