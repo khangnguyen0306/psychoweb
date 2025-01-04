@@ -95,6 +95,9 @@ const CustomHeader = () => {
                         <Menu.Item key="/">
                             <NavLink exact to="/" activeClassName="active">Trang chủ</NavLink>
                         </Menu.Item>
+                        <Menu.Item key="/">
+                            <NavLink exact to="/editor" activeClassName="active">Editor</NavLink>
+                        </Menu.Item>
                         {userData?.role != "PSYCHIATRIST" && (
                             <Menu.Item key="/doctor" >
 
