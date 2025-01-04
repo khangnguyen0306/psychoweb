@@ -11,6 +11,7 @@ const Register = Loadable({ loader: () => import("../pages/register/Register") }
 const DoctorPage = Loadable({ loader: () => import("../pages/doctor/DoctorPage") });
 const DoctorDetailPage = Loadable({ loader: () => import("../pages/doctor/DoctorDetail") });
 const BookingPage = Loadable({ loader: () => import("../pages/doctor/bookingPage") });
+const Editor = Loadable({ loader: () => import("../../src/components/editor/Editor") });
 const Profile = Loadable({
   loader: () => import("../pages/profile/profile"),
 });
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     element: Login,
+  },
+  {
+    path: "/editor",
+    element: Editor,
   },
   {
     path: "/payment-confirmation",

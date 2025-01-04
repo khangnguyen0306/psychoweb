@@ -27,6 +27,7 @@
     "react-redux": "^9.1.0",
     "react-router-dom": "^6.26.1",
     "react-toastify": "^10.0.6",
+    "reactjs-tiptap-editor": "workspace:*",
     "redux-persist": "^6.0.0",
     "sass": "^1.77.8"
   },
